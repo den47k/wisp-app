@@ -1,0 +1,18 @@
+node_modules
+dist/
+build/
+.turbo/
+.cache/
+*.local
+.env
+.env.*
+!.env.example
+.DS_Store
+*.log
+
+#Editors
+.zed
+
+# Tauri
+target/
+src-tauri/target/
