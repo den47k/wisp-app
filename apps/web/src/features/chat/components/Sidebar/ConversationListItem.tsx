@@ -9,13 +9,7 @@ interface Props {
 
 export const ConversationListItem = ({ conversation: c, active, onSelect }: Props) => (
   <button type="button" className={cn("wh-convo", active && "is-active")} onClick={onSelect}>
-    <Avatar
-      gradientIdx={c.avatarIdx}
-      size={38}
-      name={c.name}
-      online={c.online}
-      group={c.group}
-    />
+    <Avatar gradientIdx={c.avatarIdx} size={38} name={c.name} online={c.online} group={c.group} />
     <div className="wh-convo-body">
       <div className="wh-convo-top">
         <span className="wh-convo-name">{c.name}</span>

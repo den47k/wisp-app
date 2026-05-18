@@ -1,14 +1,18 @@
-import { z } from "zod";
 import {
   AuthenticatedUserSchema,
   LoginResponseSchema,
   RegisterStartResponseSchema,
   RegisterVerifyEmailResponseSchema,
   RegisterProfileResponseSchema,
+  SuggestTagResponseSchema,
   type LoginRequest,
   type LoginResponse,
+  type RegisterStartRequest,
   type RegisterStartResponse,
+  type RegisterVerifyEmailRequest,
+  type RegisterProfileRequest,
   type RegisterProfileResponse,
+  type SuggestTagResponse,
   type AuthenticatedUser,
 } from "@chat/domain";
 import { request, type ApiClient } from "../client";
@@ -28,13 +32,13 @@ export const authEndpoints = (client: ApiClient) => ({
   me: (): Promise<AuthenticatedUser> =>
     request(client, "/user", AuthenticatedUserSchema, { method: "GET" }),
 
-  registerStart: (body: { email: string }): Promise<RegisterStartResponse> =>
+  registerStart: (body: RegisterStartRequest): Promise<RegisterStartResponse> =>
     request(client, "/auth/register/start", RegisterStartResponseSchema, {
       method: "POST",
       data: body,
     }),
 
-  registerVerifyEmail: (body: { code: string }, registrationToken: string) =>
+  registerVerifyEmail: (body: RegisterVerifyEmailRequest, registrationToken: string) =>
     request(client, "/auth/register/verify-email", RegisterVerifyEmailResponseSchema, {
       method: "POST",
       data: body,
@@ -42,7 +46,7 @@ export const authEndpoints = (client: ApiClient) => ({
     }),
 
   registerProfile: (
-    body: { name: string; tag: string; password: string },
+    body: RegisterProfileRequest,
     registrationToken: string,
   ): Promise<RegisterProfileResponse> =>
     request(client, "/auth/register/profile", RegisterProfileResponseSchema, {
@@ -59,11 +63,9 @@ export const authEndpoints = (client: ApiClient) => ({
     );
   },
 
-  suggestTag: (name: string): Promise<{ tag: string }> =>
-    request(
-      client,
-      "/auth/register/suggest-tag",
-      z.object({ tag: z.string() }),
-      { method: "GET", params: { name } },
-    ),
+  suggestTag: (registrationToken: string): Promise<SuggestTagResponse> =>
+    request(client, "/auth/register/suggest-tag", SuggestTagResponseSchema, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${registrationToken}` },
+    }),
 });

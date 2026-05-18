@@ -64,24 +64,26 @@ export const SettingsPanel = ({ open, onClose }: SettingsPanelProps) => {
                   ))}
                 </div>
               </div>
-              <div className="wh-field">
-                <label className="wh-label">Display name</label>
-                <div className="wh-input-wrap">
-                  <Icon name="user" size={16} />
-                  <input defaultValue={user?.name ?? ""} />
+              <div className="wh-fields">
+                <div className="wh-field">
+                  <label className="wh-label">Display name</label>
+                  <div className="wh-input-wrap">
+                    <Icon name="user" size={16} />
+                    <input defaultValue={user?.name ?? ""} />
+                  </div>
                 </div>
-              </div>
-              <div className="wh-field">
-                <label className="wh-label">Username</label>
-                <div className="wh-input-wrap">
-                  <span className="wh-input-prefix">@</span>
-                  <input defaultValue={user?.tag ?? ""} />
+                <div className="wh-field">
+                  <label className="wh-label">Username</label>
+                  <div className="wh-input-wrap">
+                    <span className="wh-input-prefix">@</span>
+                    <input defaultValue={user?.tag ?? ""} />
+                  </div>
                 </div>
-              </div>
-              <div className="wh-field">
-                <label className="wh-label">Status</label>
-                <div className="wh-input-wrap">
-                  <input placeholder="What are you up to?" />
+                <div className="wh-field">
+                  <label className="wh-label">Status</label>
+                  <div className="wh-input-wrap">
+                    <input placeholder="What are you up to?" />
+                  </div>
                 </div>
               </div>
             </div>
@@ -135,7 +137,9 @@ export const SettingsPanel = ({ open, onClose }: SettingsPanelProps) => {
               <div className="wh-settings-row">
                 <div>
                   <div className="wh-settings-lbl">Desktop alerts</div>
-                  <div className="wh-settings-desc">Show banners when the app is in the background.</div>
+                  <div className="wh-settings-desc">
+                    Show banners when the app is in the background.
+                  </div>
                 </div>
                 <Toggle on={true} onChange={() => {}} />
               </div>

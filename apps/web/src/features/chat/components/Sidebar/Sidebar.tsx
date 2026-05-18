@@ -1,7 +1,7 @@
-import { Avatar, Icon, IconButton } from '@chat/ui';
-import { useAuthStore } from '@/stores/auth';
-import type { ChatConversation } from '../../types';
-import { ConversationListItem } from './ConversationListItem';
+import { Avatar, Icon } from "@chat/ui";
+import { useAuthStore } from "@/stores/auth";
+import type { ChatConversation } from "../../types";
+import { ConversationListItem } from "./ConversationListItem";
 
 interface SidebarProps {
   conversations: ChatConversation[];
@@ -72,12 +72,14 @@ export const Sidebar = ({
       </div>
 
       <button type="button" className="wh-me" onClick={onOpenSettings}>
-        <Avatar name={user?.name ?? 'You'} seed={user?.id} size={32} online />
+        <Avatar name={user?.name ?? "You"} seed={user?.id} size={32} online />
         <div className="wh-me-body">
-          <div className="wh-me-name">{user?.name ?? 'You'}</div>
-          <div className="wh-me-status">@{user?.tag ?? 'guest'}</div>
+          <div className="wh-me-name">{user?.name ?? "You"}</div>
+          <div className="wh-me-status">@{user?.tag ?? "guest"}</div>
         </div>
-        <IconButton icon="settings" size={16} label="Open settings" />
+        <span className="wh-icon-btn" aria-hidden="true">
+          <Icon name="settings" size={16} />
+        </span>
       </button>
     </aside>
   );
