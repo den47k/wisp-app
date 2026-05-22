@@ -1,0 +1,38 @@
+@layer components {
+  /* OAuth row + divider */
+  .wh-divider {
+    display: flex; align-items: center; gap: 10px;
+    color: var(--wh-text-dim); font-size: 11px;
+    margin: 18px 0 14px; width: 100%;
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .wh-divider::before, .wh-divider::after {
+    content: ''; flex: 1; height: 1px; background: var(--wh-line);
+  }
+  .wh-oauth-row { display: flex; gap: 10px; width: 100%; }
+  .wh-oa-btn {
+    flex: 1; height: 44px; border-radius: 12px;
+    border: 1px solid var(--wh-line);
+    background: var(--wh-surface-2);
+    color: var(--wh-text);
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    font-size: 14px; font-weight: 500;
+    transition: all .15s;
+  }
+  .wh-oa-btn:hover {
+    background: var(--wh-surface-solid);
+    border-color: var(--wh-text-dim);
+  }
+  .wh-oa-btn:disabled { opacity: .6; cursor: default; }
+
+  /* Forgot password link row */
+  .wh-form-row {
+    display: flex; justify-content: flex-end; width: 100%;
+    margin-top: 4px;
+  }
+  .wh-link-soft {
+    color: var(--wh-text-soft); font-size: 12.5px;
+    text-decoration: none; transition: color .15s;
+  }
+  .wh-link-soft:hover { color: var(--wh-text); }
+}

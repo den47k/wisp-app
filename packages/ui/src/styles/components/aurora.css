@@ -1,0 +1,16 @@
+@layer components {
+  /* Aurora */
+  .wh-aurora { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .wh-orb {
+    position: absolute; width: 70vw; height: 70vw; max-width: 900px; max-height: 900px;
+    filter: blur(60px); will-change: transform; border-radius: 50%;
+  }
+  .wh-orb--1 { top: -15vw; left: -10vw; animation: orb1 28s ease-in-out infinite; }
+  .wh-orb--2 { bottom: -20vw; right: -10vw; animation: orb2 34s ease-in-out infinite; }
+  .wh-orb--3 { top: 30vh; left: 40vw; opacity: 0.7; animation: orb3 40s ease-in-out infinite; }
+  .wh-grain {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle at 50% 50%, transparent 0, transparent 1px, rgba(255,255,255,.012) 1px, transparent 2px);
+    background-size: 3px 3px; mix-blend-mode: overlay; opacity: 0.4;
+  }
+}

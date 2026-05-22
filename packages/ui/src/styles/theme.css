@@ -1,0 +1,69 @@
+@theme {
+  --color-bg: oklch(0.985 0.003 260);
+  --color-bg-2: oklch(0.975 0.005 260);
+  --color-surface: oklch(1 0 0 / 0.66);
+  --color-surface-solid: oklch(0.99 0.003 260);
+  --color-surface-2: oklch(0.97 0.005 260);
+  --color-text: oklch(0.22 0.02 260);
+  --color-text-soft: oklch(0.45 0.015 260);
+  --color-text-dim: oklch(0.62 0.012 260);
+  --color-line: oklch(0.22 0.02 260 / 0.08);
+  --color-line-soft: oklch(0.22 0.02 260 / 0.04);
+  --color-accent-1: oklch(0.62 0.17 260);
+  --color-accent-2: oklch(0.60 0.19 290);
+  --color-online: oklch(0.72 0.17 150);
+  --color-danger: oklch(0.65 0.22 25);
+
+  --radius-bubble: 18px;
+  --radius-card: 14px;
+  --radius-card-lg: 20px;
+
+  --shadow-sm: 0 1px 2px rgba(20, 22, 40, .05);
+  --shadow-md: 0 6px 24px -8px rgba(20, 22, 40, .18), 0 2px 6px -2px rgba(20, 22, 40, .08);
+  --shadow-lg: 0 24px 60px -16px rgba(20, 22, 40, .24), 0 8px 24px -8px rgba(20, 22, 40, .12);
+
+  --font-sans: "Geist", "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "Geist Mono", "JetBrains Mono", ui-monospace, monospace;
+}
+
+:root {
+  --wh-bg: var(--color-bg);
+  --wh-bg-2: var(--color-bg-2);
+  --wh-surface: var(--color-surface);
+  --wh-surface-solid: var(--color-surface-solid);
+  --wh-surface-2: var(--color-surface-2);
+  --wh-text: var(--color-text);
+  --wh-text-soft: var(--color-text-soft);
+  --wh-text-dim: var(--color-text-dim);
+  --wh-line: var(--color-line);
+  --wh-line-soft: var(--color-line-soft);
+  --wh-accent-1: var(--color-accent-1);
+  --wh-accent-2: var(--color-accent-2);
+  --wh-gradient: linear-gradient(135deg, var(--wh-accent-1), var(--wh-accent-2));
+  --wh-shadow-sm: var(--shadow-sm);
+  --wh-shadow-md: var(--shadow-md);
+  --wh-shadow-lg: var(--shadow-lg);
+  --wh-radius: var(--radius-card);
+  --wh-radius-lg: var(--radius-card-lg);
+  --wh-bubble-radius: var(--radius-bubble);
+  --wh-font: var(--font-sans);
+  --wh-mono: var(--font-mono);
+}
+
+[data-theme="dark"] {
+  --wh-bg: oklch(0.16 0.012 260);
+  --wh-bg-2: oklch(0.18 0.014 260);
+  --wh-surface: oklch(0.22 0.014 260 / 0.66);
+  --wh-surface-solid: oklch(0.20 0.014 260);
+  --wh-surface-2: oklch(0.24 0.016 260);
+  --wh-text: oklch(0.94 0.008 260);
+  --wh-text-soft: oklch(0.72 0.012 260);
+  --wh-text-dim: oklch(0.55 0.014 260);
+  --wh-line: oklch(0.95 0.005 260 / 0.09);
+  --wh-line-soft: oklch(0.95 0.005 260 / 0.04);
+  --wh-accent-1: oklch(0.70 0.17 260);
+  --wh-accent-2: oklch(0.68 0.20 290);
+  --wh-shadow-sm: 0 1px 2px rgba(0, 0, 0, .3);
+  --wh-shadow-md: 0 8px 28px -8px rgba(0, 0, 0, .5), 0 2px 6px -2px rgba(0, 0, 0, .35);
+  --wh-shadow-lg: 0 24px 60px -16px rgba(0, 0, 0, .6), 0 8px 24px -8px rgba(0, 0, 0, .4);
+}

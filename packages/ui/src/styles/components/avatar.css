@@ -1,0 +1,28 @@
+@layer components {
+  /* Avatar */
+  .wh-avatar-box { position: relative; flex-shrink: 0; }
+  .wh-avatar-online {
+    position: absolute; right: -1px; bottom: -1px;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--color-online);
+    border: 2px solid var(--wh-surface-solid);
+  }
+  .wh-avatar {
+    border-radius: 50%; display: grid; place-items: center;
+    color: white; font-weight: 600; letter-spacing: -0.01em;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.2), var(--wh-shadow-sm);
+    flex-shrink: 0;
+  }
+  .wh-avatar-swatch {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 2px solid transparent; padding: 0;
+    transition: all .15s;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.2);
+  }
+  .wh-avatar-swatch:hover { transform: scale(1.1); }
+  .wh-avatar-swatch.is-on {
+    border-color: var(--wh-text);
+    box-shadow: 0 0 0 2px var(--wh-surface-solid), 0 0 0 3px var(--wh-text), inset 0 1px 0 rgba(255,255,255,.2);
+  }
+  .wh-avatar-picker { display: flex; flex-wrap: wrap; gap: 8px; flex: 1; }
+}

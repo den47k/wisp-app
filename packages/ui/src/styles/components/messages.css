@@ -1,0 +1,53 @@
+@layer components {
+  /* Messages */
+  .wh-msg {
+    display: flex; align-items: flex-end; gap: 8px;
+    max-width: 78%; margin-top: 2px;
+    animation: wh-msg-in .25s cubic-bezier(.2,.7,.2,1);
+  }
+  .wh-msg--me { align-self: flex-end; flex-direction: row-reverse; }
+  .wh-msg--grouped { margin-top: 1px; }
+  .wh-msg-avatar { width: 28px; flex-shrink: 0; }
+  .wh-msg-col { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .wh-msg--me .wh-msg-col { align-items: flex-end; }
+  .wh-msg-who { font-size: 11px; color: var(--wh-text-soft); font-weight: 500; padding: 0 12px 2px; }
+  .wh-bubble {
+    padding: 9px 14px;
+    border-radius: var(--wh-bubble-radius);
+    font-size: 14px; line-height: 1.45;
+    word-wrap: break-word; max-width: 100%;
+    background: var(--wh-surface-2);
+    border: 1px solid var(--wh-line);
+    color: var(--wh-text);
+    letter-spacing: -0.003em;
+  }
+  .wh-bubble--me {
+    background: var(--wh-gradient);
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 2px 12px -2px oklch(0.65 0.2 275 / 0.4), inset 0 1px 0 rgba(255,255,255,.12);
+  }
+  .wh-bubble--cont-top { border-top-left-radius: 6px; }
+  .wh-bubble--cont-bot { border-bottom-left-radius: 6px; }
+  .wh-msg--me .wh-bubble--cont-top { border-top-left-radius: var(--wh-bubble-radius); border-top-right-radius: 6px; }
+  .wh-msg--me .wh-bubble--cont-bot { border-bottom-left-radius: var(--wh-bubble-radius); border-bottom-right-radius: 6px; }
+  .wh-bubble--typing { padding: 12px 14px; display: flex; gap: 4px; align-items: center; }
+  .wh-bubble--typing span {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--wh-text-dim);
+    animation: wh-typing 1.4s infinite ease-in-out;
+  }
+  .wh-bubble--typing span:nth-child(2) { animation-delay: .2s; }
+  .wh-bubble--typing span:nth-child(3) { animation-delay: .4s; }
+  .wh-reactions { display: flex; gap: 4px; padding: 0 8px; margin-top: -2px; }
+  .wh-reaction {
+    font-size: 11px; padding: 2px 7px;
+    background: var(--wh-surface-solid);
+    border: 1px solid var(--wh-line);
+    border-radius: 999px;
+  }
+  .wh-msg-meta {
+    display: flex; align-items: center; gap: 4px;
+    font-size: 10px; color: var(--wh-text-dim); padding: 2px 8px 0;
+    font-variant-numeric: tabular-nums;
+  }
+}

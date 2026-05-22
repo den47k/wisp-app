@@ -1,0 +1,25 @@
+@layer components {
+  /* Confirm dialog */
+  .wh-confirm-overlay {
+    position: fixed; inset: 0; z-index: 110;
+    background: oklch(0.18 0.02 260 / 0.55);
+    backdrop-filter: blur(6px);
+    display: grid; place-items: center;
+    animation: wh-fade-in .15s ease-out;
+  }
+  .wh-confirm {
+    width: 380px; max-width: calc(100% - 32px);
+    padding: 22px 22px 18px;
+    background: var(--wh-surface);
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    border: 1px solid var(--wh-line);
+    border-radius: 16px;
+    box-shadow: var(--wh-shadow-lg);
+    animation: wh-cmd-in .2s cubic-bezier(.2,.7,.2,1);
+  }
+  .wh-confirm-h { font-size: 16px; font-weight: 600; margin: 0 0 6px; letter-spacing: -0.01em; }
+  .wh-confirm-desc { font-size: 13px; color: var(--wh-text-soft); margin: 0 0 18px; line-height: 1.5; }
+  .wh-confirm-actions { display: flex; gap: 8px; justify-content: flex-end; }
+  .wh-confirm-actions .wh-btn { width: auto; height: 38px; padding: 0 16px; font-size: 13px; }
+}

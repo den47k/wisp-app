@@ -1,80 +1,55 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { useNavigate, Link } from "react-router";
-import { LoginRequestSchema, isLoginSuccess, type LoginRequest } from "@chat/domain";
-import { api } from "@/lib/api";
+import { useState } from "react";
+import { useNavigate, useSearchParams } from "react-router";
+import type { LoginSuccess } from "@chat/domain";
 import { useAuthStore } from "@/stores/auth";
+import { AuthShell } from "./components/AuthShell";
+import { CredentialsStep } from "./components/Login/CredentialsStep";
+import { TwoFactorStep } from "./components/Login/TwoFactorStep";
+
+type Step = "creds" | "2fa";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
   const setSession = useAuthStore((s) => s.setSession);
+  const [searchParams] = useSearchParams();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setError,
-  } = useForm<LoginRequest>({
-    resolver: zodResolver(LoginRequestSchema),
-  });
+  const [step, setStep] = useState<Step>("creds");
+  const [challengeToken, setChallengeToken] = useState<string | null>(null);
 
-  const mutation = useMutation({
-    mutationFn: (data: LoginRequest) => api.auth.login(data),
-    onSuccess: (res) => {
-      if (isLoginSuccess(res)) {
-        setSession(res.token, res.user);
-        navigate("/", { replace: true });
-      } else {
-        setError("root", { message: "2FA required (not implemented yet)" });
-      }
-    },
-    onError: (e: Error) => setError("root", { message: e.message }),
-  });
+  const onLoggedIn = (res: LoginSuccess) => {
+    setSession(res.token, res.user);
+    navigate("/", { replace: true });
+  };
+
+  const oauthError = searchParams.get("oauth_error");
+  const resetFlash = searchParams.get("reset") === "1";
 
   return (
-    <div className="mx-auto flex min-h-screen max-w-sm flex-col justify-center px-4">
-      <h1 className="mb-6 text-2xl font-semibold">Sign in</h1>
-      <form
-        onSubmit={handleSubmit((d) => mutation.mutate(d))}
-        className="flex flex-col gap-3"
-        noValidate
-      >
-        <label className="flex flex-col gap-1 text-sm">
-          Email
-          <input
-            type="email"
-            autoComplete="email"
-            className="rounded border px-3 py-2"
-            {...register("email")}
-          />
-          {errors.email && <span className="text-red-500">{errors.email.message}</span>}
-        </label>
-        <label className="flex flex-col gap-1 text-sm">
-          Password
-          <input
-            type="password"
-            autoComplete="current-password"
-            className="rounded border px-3 py-2"
-            {...register("password")}
-          />
-          {errors.password && <span className="text-red-500">{errors.password.message}</span>}
-        </label>
-        {errors.root && <p className="text-sm text-red-500">{errors.root.message}</p>}
-        <button
-          type="submit"
-          disabled={mutation.isPending}
-          className="mt-2 rounded bg-black px-4 py-2 text-white disabled:opacity-50"
-        >
-          {mutation.isPending ? "Signing in…" : "Sign in"}
-        </button>
-      </form>
-      <p className="mt-4 text-sm">
-        No account?{" "}
-        <Link to="/register" className="underline">
-          Register
-        </Link>
-      </p>
-    </div>
+    <AuthShell footerLabel={step === "creds" ? "Sign in" : "Verify"} stageKey={step}>
+      {step === "creds" && (
+        <CredentialsStep
+          flash={resetFlash ? "Password reset. Sign in with your new password." : null}
+          oauthError={oauthError}
+          onLoggedIn={onLoggedIn}
+          onChallenge={(token) => {
+            setChallengeToken(token);
+            setStep("2fa");
+          }}
+          onInactive={(status) => {
+            navigate("/register", { state: { resume: status } });
+          }}
+        />
+      )}
+      {step === "2fa" && challengeToken && (
+        <TwoFactorStep
+          challengeToken={challengeToken}
+          onLoggedIn={onLoggedIn}
+          onBack={() => {
+            setChallengeToken(null);
+            setStep("creds");
+          }}
+        />
+      )}
+    </AuthShell>
   );
 };

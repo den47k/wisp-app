@@ -61,6 +61,65 @@ export const SuggestTagResponseSchema = z.object({
   suggestions: z.array(z.string()),
 });
 
+export const LoginAccountInactiveSchema = z.object({
+  message: z.string(),
+  status: z.enum(["pending_email", "pending_profile"]),
+});
+
+export const TwoFactorVerifyRequestSchema = z
+  .object({
+    code: z
+      .string()
+      .regex(/^\d{6}$/, "Enter the 6-digit code")
+      .optional()
+      .or(z.literal("")),
+    recovery_code: z.string().min(1).optional().or(z.literal("")),
+    device_name: z.string().max(128),
+  })
+  .refine((d) => !!d.code || !!d.recovery_code, {
+    path: ["code"],
+    message: "Enter a code or recovery code",
+  });
+
+export const ForgotPasswordRequestSchema = z.object({
+  email: z.string().email(),
+});
+
+export const ResetPasswordRequestSchema = z
+  .object({
+    token: z.string().min(1),
+    email: z.string().email(),
+    password: z.string().min(8, "At least 8 characters"),
+    password_confirmation: z.string().min(8, "At least 8 characters"),
+  })
+  .refine((d) => d.password === d.password_confirmation, {
+    path: ["password_confirmation"],
+    message: "Passwords do not match",
+  });
+
+export const MessageResponseSchema = z.object({ message: z.string() });
+
+export const OAuthRedirectResponseSchema = z.object({ url: z.string().url() });
+
+export const OAuthLinkRequiredSchema = z.object({
+  status: z.literal("link_required"),
+  link_token: z.string(),
+  token_type: z.literal("Bearer"),
+  expires_in: z.number(),
+});
+
+export const OAuthPendingRegistrationSchema = z.object({
+  status: z.enum(["pending_email", "pending_profile"]),
+  registration_token: z.string(),
+  token_type: z.literal("Bearer"),
+  expires_in: z.number(),
+});
+
+export const OAuthConfirmLinkRequestSchema = z.object({
+  password: z.string().min(1),
+  device_name: z.string().max(128),
+});
+
 export type LoginRequest = z.infer<typeof LoginRequestSchema>;
 export type LoginSuccess = z.infer<typeof LoginSuccessSchema>;
 export type Login2FARequired = z.infer<typeof Login2FARequiredSchema>;
@@ -71,5 +130,23 @@ export type RegisterVerifyEmailRequest = z.infer<typeof RegisterVerifyEmailReque
 export type RegisterProfileRequest = z.infer<typeof RegisterProfileRequestSchema>;
 export type RegisterProfileResponse = z.infer<typeof RegisterProfileResponseSchema>;
 export type SuggestTagResponse = z.infer<typeof SuggestTagResponseSchema>;
+export type LoginAccountInactive = z.infer<typeof LoginAccountInactiveSchema>;
+export type TwoFactorVerifyRequest = z.infer<typeof TwoFactorVerifyRequestSchema>;
+export type ForgotPasswordRequest = z.infer<typeof ForgotPasswordRequestSchema>;
+export type ResetPasswordRequest = z.infer<typeof ResetPasswordRequestSchema>;
+export type MessageResponse = z.infer<typeof MessageResponseSchema>;
+export type OAuthRedirectResponse = z.infer<typeof OAuthRedirectResponseSchema>;
+export type OAuthLinkRequired = z.infer<typeof OAuthLinkRequiredSchema>;
+export type OAuthPendingRegistration = z.infer<typeof OAuthPendingRegistrationSchema>;
+export type OAuthConfirmLinkRequest = z.infer<typeof OAuthConfirmLinkRequestSchema>;
+
+export type OAuthCallbackResult =
+  | ({ kind: "logged_in" } & LoginSuccess)
+  | ({ kind: "pending_email" | "pending_profile" } & Omit<OAuthPendingRegistration, "status">)
+  | ({ kind: "link_required" } & Omit<OAuthLinkRequired, "status">);
+
+export type OAuthConfirmLinkResult =
+  | ({ kind: "logged_in" } & LoginSuccess)
+  | ({ kind: "pending_email" | "pending_profile" } & Omit<OAuthPendingRegistration, "status">);
 
 export const isLoginSuccess = (r: LoginResponse): r is LoginSuccess => "token" in r;

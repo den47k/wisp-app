@@ -9,6 +9,7 @@ type Tab = "profile" | "appearance" | "notifications" | "privacy";
 interface SettingsPanelProps {
   open: boolean;
   onClose: () => void;
+  onSignOut: () => void;
 }
 
 const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
@@ -18,7 +19,7 @@ const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: "privacy", label: "Privacy", icon: <Icon name="lock" size={14} /> },
 ];
 
-export const SettingsPanel = ({ open, onClose }: SettingsPanelProps) => {
+export const SettingsPanel = ({ open, onClose, onSignOut }: SettingsPanelProps) => {
   const [tab, setTab] = useState<Tab>("profile");
   const { theme, setTheme } = useThemeStore();
   const user = useAuthStore((s) => s.user);
@@ -41,10 +42,20 @@ export const SettingsPanel = ({ open, onClose }: SettingsPanelProps) => {
               <span>{t.label}</span>
             </button>
           ))}
-          <button type="button" className="wh-settings-tab wh-settings-close" onClick={onClose}>
-            <Icon name="x" size={14} />
-            <span>Close</span>
-          </button>
+          <div className="wh-settings-foot">
+            <button
+              type="button"
+              className="wh-settings-tab wh-settings-tab--danger"
+              onClick={onSignOut}
+            >
+              <Icon name="logout" size={14} />
+              <span>Sign out</span>
+            </button>
+            <button type="button" className="wh-settings-tab wh-settings-close" onClick={onClose}>
+              <Icon name="x" size={14} />
+              <span>Close</span>
+            </button>
+          </div>
         </aside>
 
         <div className="wh-settings-body">

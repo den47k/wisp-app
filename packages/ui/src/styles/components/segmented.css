@@ -1,0 +1,23 @@
+@layer components {
+  /* Segmented */
+  .wh-seg {
+    position: relative;
+    display: flex; padding: 4px;
+    background: var(--wh-surface-2);
+    border: 1px solid var(--wh-line);
+    border-radius: 12px; margin-bottom: 4px;
+  }
+  .wh-seg button {
+    flex: 1; border: 0; background: transparent; padding: 8px;
+    color: var(--wh-text-soft); font-size: 13px; font-weight: 500;
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    border-radius: 8px; position: relative; z-index: 1; transition: color .2s;
+  }
+  .wh-seg-on { color: var(--wh-text); }
+  .wh-seg-thumb {
+    position: absolute; top: 4px; bottom: 4px; width: calc(50% - 4px);
+    background: var(--wh-surface-solid);
+    border-radius: 8px; box-shadow: var(--wh-shadow-sm);
+    transition: left .25s cubic-bezier(.3,.8,.3,1);
+  }
+}

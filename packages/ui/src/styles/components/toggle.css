@@ -1,0 +1,32 @@
+@layer components {
+  /* Theme switch + mini toggle */
+  .wh-theme-switch {
+    display: flex; padding: 3px;
+    background: var(--wh-surface-2); border: 1px solid var(--wh-line);
+    border-radius: 10px;
+  }
+  .wh-theme-switch button {
+    border: 0; background: transparent; color: var(--wh-text-soft);
+    padding: 6px 12px; font-size: 12px; font-weight: 500; border-radius: 7px;
+    display: inline-flex; align-items: center; gap: 5px;
+    transition: all .15s;
+  }
+  .wh-theme-switch button.is-on {
+    background: var(--wh-surface-solid); color: var(--wh-text);
+    box-shadow: var(--wh-shadow-sm);
+  }
+  .wh-mini-toggle {
+    width: 34px; height: 20px; border-radius: 999px;
+    background: var(--wh-line); position: relative;
+    display: inline-block; transition: background .2s;
+    border: 0; padding: 0; cursor: pointer;
+  }
+  .wh-mini-toggle span {
+    position: absolute; top: 2px; left: 2px;
+    width: 16px; height: 16px; border-radius: 50%;
+    background: white; box-shadow: var(--wh-shadow-sm);
+    transition: transform .2s;
+  }
+  .wh-mini-toggle--on { background: var(--wh-gradient); }
+  .wh-mini-toggle--on span { transform: translateX(14px); }
+}

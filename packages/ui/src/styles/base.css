@@ -1,0 +1,15 @@
+@layer base {
+  * { box-sizing: border-box; }
+  html, body, #root { height: 100%; margin: 0; }
+  body {
+    font-family: var(--wh-font);
+    font-feature-settings: "ss01", "cv11";
+    color: var(--wh-text);
+    background: var(--wh-bg);
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+    letter-spacing: -0.005em;
+  }
+  button { font-family: inherit; cursor: pointer; }
+  input, textarea { font-family: inherit; color: inherit; }
+}

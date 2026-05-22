@@ -1,7 +1,13 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { cn } from "../cn";
 
-type Variant = "primary" | "ghost";
+type Variant = "primary" | "ghost" | "danger";
+
+const VARIANT_CLASS: Record<Variant, string> = {
+  primary: "wh-btn--primary",
+  ghost: "wh-btn--ghost",
+  danger: "wh-btn--danger",
+};
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant;
@@ -20,7 +26,7 @@ export const Button = ({
 }: ButtonProps) => (
   <button
     type={type}
-    className={cn("wh-btn", variant === "primary" ? "wh-btn--primary" : "wh-btn--ghost", className)}
+    className={cn("wh-btn", VARIANT_CLASS[variant], className)}
     {...rest}
   >
     {leading}

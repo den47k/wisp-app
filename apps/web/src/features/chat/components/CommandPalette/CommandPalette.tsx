@@ -33,6 +33,7 @@ const ACTIONS: Omit<ActionItem, "kind">[] = [
   { id: "theme", label: "Toggle light / dark", hint: "Theme", icon: <Icon name="moon" size={14} /> },
   { id: "settings", label: "Open settings", hint: "Prefs", icon: <Icon name="settings" size={14} /> },
   { id: "archive", label: "View archived", hint: "Archive", icon: <Icon name="archive" size={14} /> },
+  { id: "signout", label: "Sign out", hint: "Account", icon: <Icon name="logout" size={14} /> },
 ];
 
 export const CommandPalette = ({

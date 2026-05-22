@@ -1,0 +1,37 @@
+@layer components {
+  /* Inputs */
+  .wh-field { display: flex; flex-direction: column; gap: 6px; }
+  .wh-fields { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
+  .wh-label { font-size: 12px; font-weight: 500; color: var(--wh-text-soft); letter-spacing: 0.01em; }
+  .wh-input-wrap {
+    display: flex; align-items: center; gap: 10px;
+    padding: 0 12px; height: 44px;
+    background: var(--wh-surface-2);
+    border: 1px solid var(--wh-line);
+    border-radius: 12px;
+    transition: all .2s;
+    color: var(--wh-text-soft);
+  }
+  .wh-input-wrap:focus-within {
+    border-color: var(--wh-accent-1);
+    background: var(--wh-surface-solid);
+    box-shadow: 0 0 0 4px oklch(0.65 0.18 275 / 0.1);
+  }
+  .wh-input-wrap.is-err {
+    border-color: oklch(0.65 0.22 25);
+    box-shadow: 0 0 0 4px oklch(0.65 0.22 25 / 0.1);
+  }
+  .wh-input-wrap input, .wh-input-wrap textarea {
+    flex: 1; border: 0; background: transparent; outline: none;
+    color: var(--wh-text); font-size: 14px; min-width: 0;
+  }
+  .wh-input-prefix { color: var(--wh-text-dim); font-size: 14px; }
+  .wh-input-aff {
+    background: transparent; border: 0; padding: 4px;
+    color: var(--wh-text-dim); display: grid; place-items: center;
+    border-radius: 6px;
+  }
+  .wh-input-aff:hover { color: var(--wh-text); }
+  .wh-err { font-size: 12px; color: oklch(0.60 0.22 25); }
+  .wh-hint { font-size: 12px; color: var(--wh-text-dim); font-family: var(--wh-mono); }
+}

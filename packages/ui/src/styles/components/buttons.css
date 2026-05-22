@@ -1,0 +1,46 @@
+@layer components {
+  /* Buttons */
+  .wh-btn {
+    height: 44px; padding: 0 18px;
+    border-radius: 12px; border: 1px solid transparent;
+    font-size: 14px; font-weight: 500;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    transition: all .2s; width: 100%;
+  }
+  .wh-btn--primary {
+    background: var(--wh-gradient); color: white;
+    box-shadow: 0 4px 14px -4px oklch(0.65 0.2 275 / 0.5), inset 0 1px 0 rgba(255,255,255,.2);
+    position: relative; overflow: hidden;
+  }
+  .wh-btn--primary::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,.18), transparent 50%);
+    opacity: 0; transition: opacity .2s;
+  }
+  .wh-btn--primary:hover { transform: translateY(-1px); box-shadow: 0 8px 24px -6px oklch(0.65 0.2 275 / 0.6); }
+  .wh-btn--primary:hover::before { opacity: 1; }
+  .wh-btn--primary:active { transform: translateY(0); }
+  .wh-btn--ghost {
+    background: var(--wh-surface-2);
+    border-color: var(--wh-line);
+    color: var(--wh-text);
+  }
+  .wh-btn--ghost:hover { background: var(--wh-surface-solid); border-color: var(--wh-text-dim); }
+  .wh-btn--danger {
+    background: oklch(0.62 0.18 25);
+    border-color: transparent;
+    color: white
+  }
+  .wh-btn--danger:hover {
+    background: oklch(0.56 0.19 25);
+  }
+  .wh-btn--danger:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  /* Icon button */
+  .wh-icon-btn {
+    width: 30px; height: 30px; border-radius: 8px;
+    background: transparent; border: 0; color: var(--wh-text-soft);
+    display: grid; place-items: center; transition: all .15s;
+  }
+  .wh-icon-btn:hover { background: var(--wh-surface-2); color: var(--wh-text); }
+}

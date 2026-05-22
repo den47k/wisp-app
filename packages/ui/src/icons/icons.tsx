@@ -29,7 +29,8 @@ export type IconName =
   | "bolt"
   | "archive"
   | "hash"
-  | "bell";
+  | "bell"
+  | "logout";
 
 export const ICON_PATHS: Record<IconName, ReactNode> = {
   search: <path d="M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm10 2-4.35-4.35" />,
@@ -133,4 +134,11 @@ export const ICON_PATHS: Record<IconName, ReactNode> = {
   ),
   hash: <path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18" />,
   bell: <path d="M18 16V11a6 6 0 1 0-12 0v5l-2 3h16l-2-3ZM10 21a2 2 0 0 0 4 0" />,
+  logout: (
+    <>
+      <path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3" />
+      <path d="M10 17l-5-5 5-5" />
+      <path d="M15 12H5" />
+    </>
+  ),
 };
