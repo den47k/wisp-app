@@ -3,8 +3,9 @@ import { Avatar, Icon, Toggle } from "@chat/ui";
 import { AVATAR_GRADIENTS } from "@chat/ui";
 import { useThemeStore } from "@/stores/theme";
 import { useAuthStore } from "@/stores/auth";
+import { SecurityTab } from "./SecurityTab";
 
-type Tab = "profile" | "appearance" | "notifications" | "privacy";
+type Tab = "profile" | "appearance" | "notifications" | "privacy" | "security";
 
 interface SettingsPanelProps {
   open: boolean;
@@ -16,7 +17,8 @@ const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: "profile", label: "Profile", icon: <Icon name="user" size={14} /> },
   { id: "appearance", label: "Appearance", icon: <Icon name="sparkle" size={14} /> },
   { id: "notifications", label: "Notifications", icon: <Icon name="bell" size={14} /> },
-  { id: "privacy", label: "Privacy", icon: <Icon name="lock" size={14} /> },
+  { id: "privacy", label: "Privacy", icon: <Icon name="eye" size={14} /> },
+  { id: "security", label: "Security", icon: <Icon name="lock" size={14} /> },
 ];
 
 export const SettingsPanel = ({ open, onClose, onSignOut }: SettingsPanelProps) => {
@@ -190,6 +192,8 @@ export const SettingsPanel = ({ open, onClose, onSignOut }: SettingsPanelProps) 
               </div>
             </div>
           )}
+
+          {tab === "security" && <SecurityTab />}
         </div>
       </div>
     </div>

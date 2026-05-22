@@ -30,7 +30,14 @@ export type IconName =
   | "archive"
   | "hash"
   | "bell"
-  | "logout";
+  | "logout"
+  | "shield"
+  | "shieldCheck"
+  | "qr"
+  | "copy"
+  | "download"
+  | "refresh"
+  | "key";
 
 export const ICON_PATHS: Record<IconName, ReactNode> = {
   search: <path d="M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm10 2-4.35-4.35" />,
@@ -121,9 +128,7 @@ export const ICON_PATHS: Record<IconName, ReactNode> = {
   sparkle: (
     <path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M5.6 18.4l2.8-2.8M15.6 8.4l2.8-2.8" />
   ),
-  command: (
-    <path d="M9 6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3Z" />
-  ),
+  command: <path d="M9 6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3Z" />,
   enter: <path d="M9 10 4 15l5 5M4 15h12a4 4 0 0 0 4-4V4" />,
   bolt: <path d="m13 2-9 12h8l-1 8 9-12h-8l1-8Z" />,
   archive: (
@@ -139,6 +144,35 @@ export const ICON_PATHS: Record<IconName, ReactNode> = {
       <path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3" />
       <path d="M10 17l-5-5 5-5" />
       <path d="M15 12H5" />
+    </>
+  ),
+  shield: <path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5l-8-3Z" />,
+  shieldCheck: (
+    <>
+      <path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5l-8-3Z" />
+      <path d="m9 12 2 2 4-4" />
+    </>
+  ),
+  qr: (
+    <>
+      <rect x="3" y="3" width="7" height="7" rx="1" />
+      <rect x="14" y="3" width="7" height="7" rx="1" />
+      <rect x="3" y="14" width="7" height="7" rx="1" />
+      <path d="M14 14h3v3M21 14v0M14 21v-3M17 21h4M21 17v4" />
+    </>
+  ),
+  copy: (
+    <>
+      <rect x="8" y="8" width="13" height="13" rx="2" />
+      <path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3" />
+    </>
+  ),
+  download: <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />,
+  refresh: <path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5" />,
+  key: (
+    <>
+      <circle cx="7.5" cy="15.5" r="4.5" />
+      <path d="m10.7 12.3 9.6-9.6M16 7l3 3M14 9l3 3" />
     </>
   ),
 };

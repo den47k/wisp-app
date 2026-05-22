@@ -41,7 +41,7 @@
     background: var(--wh-surface-solid); color: var(--wh-text);
     box-shadow: inset 0 0 0 1px var(--wh-line);
   }
-  /* Destructive tab (e.g. Sign out) — reusable modifier driven by the danger token. */
+  
   .wh-settings-tab--danger { color: var(--wh-text-soft); }
   .wh-settings-tab--danger:hover {
     background: color-mix(in oklab, var(--color-danger) 14%, transparent);
@@ -70,4 +70,14 @@
     background: oklch(0.72 0.17 150 / 0.12); color: oklch(0.55 0.17 150);
     font-weight: 500;
   }
+
+  .wh-settings-h-row {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
+  }
+  .wh-settings-h-row .wh-settings-h { margin: 0; }
+  .wh-settings-h-row .wh-badge-ok {
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+
+  .wh-settings-lbl--danger { color: oklch(0.62 0.18 25); }
 }

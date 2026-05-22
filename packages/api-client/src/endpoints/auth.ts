@@ -8,6 +8,8 @@ import {
   RegisterVerifyEmailResponseSchema,
   RegisterProfileResponseSchema,
   SuggestTagResponseSchema,
+  TwoFactorEnableResponseSchema,
+  RecoveryCodesResponseSchema,
   type ForgotPasswordRequest,
   type LoginRequest,
   type LoginResponse,
@@ -25,6 +27,10 @@ import {
   type ResetPasswordRequest,
   type SuggestTagResponse,
   type TwoFactorVerifyRequest,
+  type TwoFactorConfirmRequest,
+  type TwoFactorDisableRequest,
+  type TwoFactorEnableResponse,
+  type RecoveryCodesResponse,
   type AuthenticatedUser,
 } from "@chat/domain";
 import { request, type ApiClient } from "../client";
@@ -88,6 +94,27 @@ export const authEndpoints = (client: ApiClient) => ({
       method: "POST",
       data: body,
       headers: { Authorization: `Bearer ${challengeToken}` },
+    }),
+
+  twoFactorEnable: (): Promise<TwoFactorEnableResponse> =>
+    request(client, "/auth/2fa/enable", TwoFactorEnableResponseSchema, { method: "POST" }),
+
+  twoFactorConfirm: (body: TwoFactorConfirmRequest): Promise<RecoveryCodesResponse> =>
+    request(client, "/auth/2fa/confirm", RecoveryCodesResponseSchema, {
+      method: "POST",
+      data: body,
+    }),
+
+  twoFactorDisable: (body: TwoFactorDisableRequest): Promise<MessageResponse> =>
+    request(client, "/auth/2fa/disable", MessageResponseSchema, {
+      method: "POST",
+      data: body,
+    }),
+
+  twoFactorRecoveryCodes: (body: TwoFactorDisableRequest): Promise<RecoveryCodesResponse> =>
+    request(client, "/auth/2fa/recovery-codes", RecoveryCodesResponseSchema, {
+      method: "POST",
+      data: body,
     }),
 
   forgotPassword: (body: ForgotPasswordRequest): Promise<MessageResponse> =>

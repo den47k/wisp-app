@@ -36,7 +36,24 @@
   }
   .wh-btn--danger:disabled { opacity: 0.6; cursor: not-allowed; }
 
-  /* Icon button */
+  .wh-btn--auto { width: auto; padding: 0 16px; height: 36px; font-size: 13px; }
+  .wh-btn.is-disabled, .wh-btn:disabled { opacity: 0.5; pointer-events: none; }
+
+  .wh-link-btn {
+    display: inline-flex; align-items: center; gap: 5px;
+    border: 0; background: transparent;
+    color: var(--wh-text-soft); font-size: 12.5px; font-weight: 500;
+    padding: 6px 10px; border-radius: 7px;
+    transition: all .15s;
+  }
+  .wh-link-btn:hover { background: var(--wh-surface-2); color: var(--wh-text); }
+  .wh-link-btn:disabled { opacity: 0.5; pointer-events: none; }
+  .wh-link-btn--danger { color: oklch(0.62 0.18 25); }
+  .wh-link-btn--danger:hover {
+    background: color-mix(in oklab, oklch(0.65 0.18 25) 12%, transparent);
+    color: oklch(0.55 0.19 25);
+  }
+
   .wh-icon-btn {
     width: 30px; height: 30px; border-radius: 8px;
     background: transparent; border: 0; color: var(--wh-text-soft);

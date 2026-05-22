@@ -3,6 +3,7 @@ export { AVATAR_GRADIENTS, hashSeed, avatarGradientFor, gradientCount } from "./
 export { Icon, type IconName } from "./icons";
 export { Avatar } from "./primitives/Avatar";
 export { Button } from "./primitives/Button";
+export { LinkButton } from "./primitives/LinkButton";
 export { IconButton } from "./primitives/IconButton";
 export { Input } from "./primitives/Input";
 export { SegmentedControl } from "./primitives/SegmentedControl";

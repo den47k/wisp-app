@@ -19,6 +19,7 @@
 @import "./styles/components/composer.css";
 @import "./styles/components/command-palette.css";
 @import "./styles/components/settings.css";
+@import "./styles/components/two-factor.css";
 @import "./styles/components/confirm.css";
 @import "./styles/components/toggle.css";
 @import "./styles/components/onboarding.css";

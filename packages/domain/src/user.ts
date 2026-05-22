@@ -17,6 +17,7 @@ export const UserSchema = z.object({
 export const AuthenticatedUserSchema = UserSchema.extend({
   email: z.string().email(),
   isEmailVerified: z.boolean(),
+  twoFactorEnabled: z.boolean(),
 });
 
 export type Avatar = z.infer<typeof AvatarSchema>;

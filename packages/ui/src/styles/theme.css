@@ -48,6 +48,9 @@
   --wh-bubble-radius: var(--radius-bubble);
   --wh-font: var(--font-sans);
   --wh-mono: var(--font-mono);
+
+  --wh-tfa-qr-bg: oklch(0.99 0 0);
+  --wh-tfa-qr-fg: oklch(0.18 0.02 260);
 }
 
 [data-theme="dark"] {
@@ -66,4 +69,6 @@
   --wh-shadow-sm: 0 1px 2px rgba(0, 0, 0, .3);
   --wh-shadow-md: 0 8px 28px -8px rgba(0, 0, 0, .5), 0 2px 6px -2px rgba(0, 0, 0, .35);
   --wh-shadow-lg: 0 24px 60px -16px rgba(0, 0, 0, .6), 0 8px 24px -8px rgba(0, 0, 0, .4);
+  --wh-tfa-qr-bg: oklch(0.94 0.005 260);
+  --wh-tfa-qr-fg: oklch(0.16 0.014 260);
 }

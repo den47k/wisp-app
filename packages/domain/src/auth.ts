@@ -81,6 +81,23 @@ export const TwoFactorVerifyRequestSchema = z
     message: "Enter a code or recovery code",
   });
 
+export const TwoFactorEnableResponseSchema = z.object({
+  secret: z.string(),
+  qr_uri: z.string(),
+});
+
+export const TwoFactorConfirmRequestSchema = z.object({
+  otp: z.string().regex(/^\d{6}$/, "Enter the 6-digit code"),
+});
+
+export const RecoveryCodesResponseSchema = z.object({
+  recovery_codes: z.array(z.string()),
+});
+
+export const TwoFactorDisableRequestSchema = z.object({
+  password: z.string().min(1, "Enter your password"),
+});
+
 export const ForgotPasswordRequestSchema = z.object({
   email: z.string().email(),
 });
@@ -132,6 +149,10 @@ export type RegisterProfileResponse = z.infer<typeof RegisterProfileResponseSche
 export type SuggestTagResponse = z.infer<typeof SuggestTagResponseSchema>;
 export type LoginAccountInactive = z.infer<typeof LoginAccountInactiveSchema>;
 export type TwoFactorVerifyRequest = z.infer<typeof TwoFactorVerifyRequestSchema>;
+export type TwoFactorEnableResponse = z.infer<typeof TwoFactorEnableResponseSchema>;
+export type TwoFactorConfirmRequest = z.infer<typeof TwoFactorConfirmRequestSchema>;
+export type RecoveryCodesResponse = z.infer<typeof RecoveryCodesResponseSchema>;
+export type TwoFactorDisableRequest = z.infer<typeof TwoFactorDisableRequestSchema>;
 export type ForgotPasswordRequest = z.infer<typeof ForgotPasswordRequestSchema>;
 export type ResetPasswordRequest = z.infer<typeof ResetPasswordRequestSchema>;
 export type MessageResponse = z.infer<typeof MessageResponseSchema>;
