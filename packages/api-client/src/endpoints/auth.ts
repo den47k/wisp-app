@@ -153,6 +153,14 @@ export const authEndpoints = (client: ApiClient) => ({
         expires_in: data.expires_in as number,
       };
     }
+    if (data.requires_2fa === true) {
+      return {
+        kind: "2fa",
+        challenge_token: data.challenge_token as string,
+        token_type: "Bearer",
+        expires_in: data.expires_in as number,
+      };
+    }
     if (data.status === "pending_email" || data.status === "pending_profile") {
       return {
         kind: data.status,
@@ -176,6 +184,14 @@ export const authEndpoints = (client: ApiClient) => ({
       headers: { Authorization: `Bearer ${linkToken}` },
     });
     const data = res.data as Record<string, unknown>;
+    if (data.requires_2fa === true) {
+      return {
+        kind: "2fa",
+        challenge_token: data.challenge_token as string,
+        token_type: "Bearer",
+        expires_in: data.expires_in as number,
+      };
+    }
     if (data.status === "pending_email" || data.status === "pending_profile") {
       return {
         kind: data.status,

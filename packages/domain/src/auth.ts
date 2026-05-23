@@ -163,11 +163,13 @@ export type OAuthConfirmLinkRequest = z.infer<typeof OAuthConfirmLinkRequestSche
 
 export type OAuthCallbackResult =
   | ({ kind: "logged_in" } & LoginSuccess)
+  | ({ kind: "2fa" } & Omit<Login2FARequired, "requires_2fa">)
   | ({ kind: "pending_email" | "pending_profile" } & Omit<OAuthPendingRegistration, "status">)
   | ({ kind: "link_required" } & Omit<OAuthLinkRequired, "status">);
 
 export type OAuthConfirmLinkResult =
   | ({ kind: "logged_in" } & LoginSuccess)
+  | ({ kind: "2fa" } & Omit<Login2FARequired, "requires_2fa">)
   | ({ kind: "pending_email" | "pending_profile" } & Omit<OAuthPendingRegistration, "status">);
 
 export const isLoginSuccess = (r: LoginResponse): r is LoginSuccess => "token" in r;

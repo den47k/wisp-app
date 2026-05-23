@@ -1,16 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams, useSearchParams } from "react-router";
-import type { OAuthCallbackResult } from "@chat/domain";
+import type { LoginSuccess, OAuthCallbackResult } from "@chat/domain";
 import { api } from "@/lib/api";
 import { useAuthStore } from "@/stores/auth";
 import { deviceName, type Provider } from "./utils";
 import { AuthShell } from "./components/AuthShell";
 import { OAuthCallbackLinkForm } from "./components/OAuthCallbackLinkForm";
+import { TwoFactorStep } from "./components/Login/TwoFactorStep";
 
 type State =
   | { kind: "loading" }
   | { kind: "error"; message: string }
-  | { kind: "link_required"; linkToken: string };
+  | { kind: "link_required"; linkToken: string }
+  | { kind: "2fa"; challengeToken: string };
 
 const isProvider = (p: string | undefined): p is Provider => p === "google" || p === "github";
 
@@ -27,6 +29,11 @@ export const OAuthCallbackPage = () => {
 
   const [view, setView] = useState<State>({ kind: "loading" });
   const firedRef = useRef(false);
+
+  const onLoggedIn = (res: LoginSuccess) => {
+    setSession(res.token, res.user);
+    navigate("/", { replace: true });
+  };
 
   useEffect(() => {
     if (firedRef.current) return;
@@ -52,6 +59,8 @@ export const OAuthCallbackPage = () => {
           navigate("/", { replace: true });
         } else if (res.kind === "link_required") {
           setView({ kind: "link_required", linkToken: res.link_token });
+        } else if (res.kind === "2fa") {
+          setView({ kind: "2fa", challengeToken: res.challenge_token });
         } else {
           navigate("/register", {
             state: { resume: res.kind, registration_token: res.registration_token },
@@ -66,7 +75,7 @@ export const OAuthCallbackPage = () => {
   }, [provider, code, state, errorParam, navigate, setSession]);
 
   return (
-    <AuthShell footerLabel="OAuth">
+    <AuthShell footerLabel={view.kind === "2fa" ? "Verify" : "OAuth"} stageKey={view.kind}>
       {view.kind === "loading" && (
         <>
           <h2 className="wh-onb-h wh-onb-h--sm">Signing you in…</h2>
@@ -90,8 +99,9 @@ export const OAuthCallbackPage = () => {
           linkToken={view.linkToken}
           onResult={(res) => {
             if (res.kind === "logged_in") {
-              setSession(res.token, res.user);
-              navigate("/", { replace: true });
+              onLoggedIn(res);
+            } else if (res.kind === "2fa") {
+              setView({ kind: "2fa", challengeToken: res.challenge_token });
             } else {
               navigate("/register", {
                 state: { resume: res.kind, registration_token: res.registration_token },
@@ -99,6 +109,14 @@ export const OAuthCallbackPage = () => {
               });
             }
           }}
+        />
+      )}
+
+      {view.kind === "2fa" && (
+        <TwoFactorStep
+          challengeToken={view.challengeToken}
+          onLoggedIn={onLoggedIn}
+          onBack={() => navigate("/login", { replace: true })}
         />
       )}
     </AuthShell>
