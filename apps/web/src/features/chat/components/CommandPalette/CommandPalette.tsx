@@ -46,6 +46,8 @@ export const CommandPalette = ({
   const [q, setQ] = useState("");
   const [idx, setIdx] = useState(0);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const listRef = useRef<HTMLDivElement | null>(null);
+  const kbdNav = useRef(false);
 
   useEffect(() => {
     if (open) {
@@ -54,6 +56,17 @@ export const CommandPalette = ({
       setTimeout(() => inputRef.current?.focus(), 30);
     }
   }, [open]);
+
+  useEffect(() => {
+    if (listRef.current) listRef.current.scrollTop = 0;
+  }, [q, open]);
+
+  useEffect(() => {
+    if (!kbdNav.current) return;
+    kbdNav.current = false;
+    const el = listRef.current?.querySelector<HTMLElement>(".wh-cmd-item.is-on");
+    el?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }, [idx]);
 
   const convoItems: ConvoItem[] = conversations.map((c) => ({
     kind: "convo",
@@ -82,9 +95,11 @@ export const CommandPalette = ({
   const onKey = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "ArrowDown") {
       e.preventDefault();
+      kbdNav.current = true;
       setIdx((i) => (i + 1) % all.length);
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
+      kbdNav.current = true;
       setIdx((i) => (i - 1 + all.length) % all.length);
     } else if (e.key === "Enter") {
       e.preventDefault();
@@ -119,7 +134,7 @@ export const CommandPalette = ({
           <kbd>esc</kbd>
         </div>
 
-        <div className="wh-cmd-list">
+        <div className="wh-cmd-list" ref={listRef}>
           {all.length === 0 && <div className="wh-cmd-empty">Nothing matches.</div>}
 
           {showConvoGroup && <div className="wh-cmd-group">Conversations</div>}

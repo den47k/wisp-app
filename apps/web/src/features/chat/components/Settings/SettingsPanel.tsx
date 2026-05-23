@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Avatar, Icon, Toggle } from "@chat/ui";
 import { AVATAR_GRADIENTS } from "@chat/ui";
 import { useThemeStore } from "@/stores/theme";
@@ -25,6 +25,15 @@ export const SettingsPanel = ({ open, onClose, onSignOut }: SettingsPanelProps) 
   const [tab, setTab] = useState<Tab>("profile");
   const { theme, setTheme } = useThemeStore();
   const user = useAuthStore((s) => s.user);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open, onClose]);
 
   if (!open) return null;
 
