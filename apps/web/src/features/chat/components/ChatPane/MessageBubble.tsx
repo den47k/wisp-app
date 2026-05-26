@@ -12,8 +12,7 @@ interface Props {
   onDelete?: (msg: Message) => void;
 }
 
-const sameSender = (a?: Message, b?: Message) =>
-  !!a && !!b && a.sender?.id === b.sender?.id;
+const sameSender = (a?: Message, b?: Message) => !!a && !!b && a.sender?.id === b.sender?.id;
 
 export const MessageBubble = ({
   message: m,

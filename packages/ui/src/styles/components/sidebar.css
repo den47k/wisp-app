@@ -7,7 +7,7 @@
     background: var(--wh-surface);
     backdrop-filter: blur(24px) saturate(160%);
     -webkit-backdrop-filter: blur(24px) saturate(160%);
-    min-width: 0;
+    min-width: 0; min-height: 0; height: 100%; overflow: hidden;
   }
   .wh-sb-top {
     display: flex; align-items: center; justify-content: space-between;

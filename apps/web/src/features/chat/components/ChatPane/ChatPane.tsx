@@ -110,6 +110,7 @@ export const ChatPane = ({
           placeholder={placeholder}
           onSend={onSend}
           disabled={sendDisabled}
+          focusKey={conversation.id}
         />
       )}
     </section>

@@ -9,6 +9,7 @@ interface ComposerProps {
   onChange?: (v: string) => void;
   submitLabel?: string;
   onCancel?: () => void;
+  focusKey?: string;
 }
 
 export const Composer = ({
@@ -19,6 +20,7 @@ export const Composer = ({
   onChange,
   submitLabel,
   onCancel,
+  focusKey,
 }: ComposerProps) => {
   const controlled = value !== undefined;
   const [internal, setInternal] = useState("");
@@ -32,6 +34,11 @@ export const Composer = ({
     ta.style.height = `${Math.min(140, ta.scrollHeight)}px`;
   }, [draft]);
 
+  useEffect(() => {
+    if (disabled) return;
+    ref.current?.focus();
+  }, [focusKey, disabled]);
+
   const setDraft = (next: string) => {
     if (controlled) onChange?.(next);
     else setInternal(next);
@@ -42,6 +49,7 @@ export const Composer = ({
     if (!t || disabled) return;
     onSend(t);
     if (!controlled) setInternal("");
+    ref.current?.focus();
   };
 
   const onKey = (e: KeyboardEvent<HTMLTextAreaElement>) => {
