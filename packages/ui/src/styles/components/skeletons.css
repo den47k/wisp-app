@@ -1,0 +1,194 @@
+@layer components {
+  :root {
+    --wh-skl-base: oklch(0.22 0.02 260 / 0.06);
+    --wh-skl-shine: oklch(0.22 0.02 260 / 0.12);
+  }
+  [data-theme="dark"] {
+    --wh-skl-base: oklch(0.95 0.005 260 / 0.06);
+    --wh-skl-shine: oklch(0.95 0.005 260 / 0.14);
+  }
+
+  .wh-skl {
+    display: inline-block;
+    background-color: var(--wh-skl-base);
+    background-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--wh-skl-shine) 50%,
+      transparent 100%
+    );
+    background-size: 220% 100%;
+    background-repeat: no-repeat;
+    background-position: 120% 0;
+    border-radius: 5px;
+    animation: wh-shimmer 1.6s ease-in-out infinite;
+    vertical-align: middle;
+  }
+
+  .wh-sidebar.is-loading {
+    /* hook for future */
+  }
+  .wh-sb-loading-pulse {
+    display: inline-flex;
+    gap: 3px;
+    margin-left: auto;
+    align-items: center;
+    padding: 4px 6px;
+    border-radius: 999px;
+    background: var(--wh-surface-2);
+    border: 1px solid var(--wh-line);
+  }
+  .wh-sb-loading-pulse span {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--wh-text-dim);
+    animation: wh-pulse-dot 1.2s ease-in-out infinite;
+  }
+  .wh-sb-loading-pulse span:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+  .wh-sb-loading-pulse span:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  .wh-search--skl {
+    pointer-events: none;
+    background: var(--wh-surface-2);
+  }
+  .wh-search--skl .wh-skl {
+    background-color: transparent;
+  }
+
+  .wh-sb-scroll--skl {
+    overflow: hidden;
+  }
+  .wh-sb-section--skl {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 8px 6px;
+  }
+  .wh-skl--pin {
+    width: 11px;
+    height: 11px;
+    border-radius: 3px;
+  }
+
+  .wh-convo--skl {
+    pointer-events: none;
+    cursor: default;
+  }
+  .wh-convo--skl:hover {
+    background: transparent;
+  }
+  .wh-convo--skl .wh-convo-body {
+    gap: 6px;
+    padding: 1px 0;
+  }
+  .wh-convo--skl .wh-convo-top,
+  .wh-convo--skl .wh-convo-bot {
+    gap: 6px;
+  }
+
+  .wh-me--skl {
+    pointer-events: none;
+  }
+  .wh-me--skl .wh-me-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  /* Thread skeleton */
+  .wh-chat-scroll--skl {
+    gap: 6px;
+    padding-top: 24px;
+  }
+  .wh-day-sep--skl {
+    gap: 12px;
+  }
+  .wh-day-sep--skl::before,
+  .wh-day-sep--skl::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--wh-line-soft);
+  }
+  .wh-skl--bubble {
+    border-radius: var(--wh-bubble-radius);
+    display: block;
+  }
+
+  .wh-sb-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 48px 16px;
+    text-align: center;
+  }
+  .wh-sb-empty-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--wh-surface-2);
+    border: 1px solid var(--wh-line);
+    color: var(--wh-text-dim);
+  }
+  .wh-sb-empty-title {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--wh-text);
+    letter-spacing: -0.01em;
+  }
+  .wh-sb-empty-desc {
+    font-size: 12px;
+    color: var(--wh-text-dim);
+    margin-top: -6px;
+  }
+  .wh-sb-empty-cta {
+    margin-top: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 30px;
+    padding: 0 12px;
+    border-radius: 8px;
+    border: 1px solid var(--wh-line);
+    background: var(--wh-surface-2);
+    color: var(--wh-text);
+    font-size: 12.5px;
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+  .wh-sb-empty-cta:hover {
+    background: var(--wh-surface-solid);
+    border-color: var(--wh-text-dim);
+  }
+}
+
+@keyframes wh-shimmer {
+  0% {
+    background-position: 120% 0;
+  }
+  100% {
+    background-position: -120% 0;
+  }
+}
+@keyframes wh-pulse-dot {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+    background: var(--wh-accent-1);
+  }
+}

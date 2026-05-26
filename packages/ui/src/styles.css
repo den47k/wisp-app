@@ -24,6 +24,7 @@
 @import "./styles/components/toggle.css";
 @import "./styles/components/onboarding.css";
 @import "./styles/components/auth.css";
+@import "./styles/components/skeletons.css";
 
 /* Keyframes */
 @import "./styles/keyframes.css";

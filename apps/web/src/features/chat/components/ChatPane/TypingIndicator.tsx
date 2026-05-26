@@ -1,10 +1,10 @@
 import { Avatar } from "@chat/ui";
-import type { ChatConversation } from "../../types";
+import type { Conversation } from "@chat/domain";
 
-export const TypingIndicator = ({ conversation }: { conversation: ChatConversation }) => (
+export const TypingIndicator = ({ conversation }: { conversation: Conversation }) => (
   <div className="wh-msg wh-msg--them">
     <div className="wh-msg-avatar">
-      <Avatar gradientIdx={conversation.avatarIdx} size={28} name={conversation.name} />
+      <Avatar size={28} name={conversation.title ?? ""} seed={conversation.id} />
     </div>
     <div className="wh-bubble wh-bubble--typing">
       <span />

@@ -2,8 +2,9 @@ import { z } from "zod";
 
 export const AvatarSchema = z
   .object({
-    path: z.string().nullish(),
-    url: z.string().nullish(),
+    original: z.string(),
+    medium: z.string(),
+    small: z.string(),
   })
   .nullish();
 
@@ -20,6 +21,11 @@ export const AuthenticatedUserSchema = UserSchema.extend({
   twoFactorEnabled: z.boolean(),
 });
 
+export const SearchUsersResponseSchema = z.object({
+  data: z.array(UserSchema),
+});
+
 export type Avatar = z.infer<typeof AvatarSchema>;
 export type User = z.infer<typeof UserSchema>;
 export type AuthenticatedUser = z.infer<typeof AuthenticatedUserSchema>;
+export type SearchUsersResponse = z.infer<typeof SearchUsersResponseSchema>;

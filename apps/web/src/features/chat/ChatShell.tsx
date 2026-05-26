@@ -1,29 +1,40 @@
 import { useEffect, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { Outlet, useNavigate, useParams } from "react-router";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "@/stores/auth";
 import { useThemeStore } from "@/stores/theme";
+import { useConversationsStore, selectAll, selectByIdentifier } from "@/stores/conversations";
 import { api } from "@/lib/api";
 import { getRealtimeClient, resetRealtimeClient } from "@/lib/realtime";
 import { userChannel } from "@chat/domain";
+import type { Conversation, User } from "@chat/domain";
 import { Button } from "@chat/ui";
-import { MOCK_CONVERSATIONS, MOCK_THREADS } from "./mocks";
-import type { ChatConversation, ChatMessage } from "./types";
 import { Aurora } from "./components/Aurora";
 import { Sidebar } from "./components/Sidebar/Sidebar";
-import { ChatPane } from "./components/ChatPane/ChatPane";
 import { CommandPalette } from "./components/CommandPalette/CommandPalette";
 import { useCommandPalette } from "./components/CommandPalette/useCommandPalette";
 import { SettingsPanel } from "./components/Settings/SettingsPanel";
+import { useConversationsQuery } from "./hooks/useConversationsQuery";
+import { useMessagesStore } from "@/stores/messages";
+import { handleRealtimeEvent } from "./realtime/dispatcher";
 
 export const ChatShell = () => {
   const user = useAuthStore((s) => s.user);
-  const clear = useAuthStore((s) => s.clear);
+  const clearUser = useAuthStore((s) => s.clear);
+  const clearConversations = useConversationsStore((s) => s.clear);
+  const clearMessages = useMessagesStore((s) => s.clear);
+  const setEphemeral = useConversationsStore((s) => s.setEphemeral);
+  const byTag = useConversationsStore((s) => s.byTag);
+  const byId = useConversationsStore((s) => s.byId);
   const { toggle: toggleTheme } = useThemeStore();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { identifier } = useParams<{ identifier: string }>();
 
-  const [conversations, setConversations] = useState<ChatConversation[]>(MOCK_CONVERSATIONS);
-  const [threads, setThreads] = useState<Record<string, ChatMessage[]>>(MOCK_THREADS);
-  const [activeId, setActiveId] = useState<string>(MOCK_CONVERSATIONS[0]!.id);
-  const [typing, setTyping] = useState(false);
+  const conversations = useConversationsStore(selectAll);
+  const active = useConversationsStore(selectByIdentifier(identifier));
+  const conversationsQuery = useConversationsQuery();
+
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [confirmLogout, setConfirmLogout] = useState(false);
   const { open: cmdOpen, setOpen: setCmdOpen } = useCommandPalette();
@@ -32,7 +43,25 @@ export const ChatShell = () => {
     mutationFn: () => api.auth.logout(),
     onSettled: () => {
       resetRealtimeClient();
-      clear();
+      queryClient.clear();
+      clearConversations();
+      clearMessages();
+      clearUser();
+    },
+  });
+
+  const createPrivate = useMutation({
+    mutationFn: (userId: string) => api.conversations.createPrivate(userId, false),
+    onSuccess: (conversation) => {
+      const existing = byId[conversation.id];
+      if (existing) {
+        const seg = existing.userTag ?? existing.id;
+        navigate(`/${encodeURIComponent(seg)}`);
+        return;
+      }
+      setEphemeral(conversation);
+      const seg = conversation.userTag ?? conversation.id;
+      navigate(`/${encodeURIComponent(seg)}`);
     },
   });
 
@@ -41,46 +70,25 @@ export const ChatShell = () => {
     const rt = getRealtimeClient();
     rt.connect();
     const unsub = rt.subscribe(userChannel(user.id), {
-      onPublication: (data) => console.log("[user channel]", data),
+      onPublication: (data) => handleRealtimeEvent(data, { currentUserId: user.id }),
     });
     return () => {
       unsub();
     };
   }, [user]);
 
-  const active = (conversations.find((c) => c.id === activeId) ?? conversations[0])!;
-  const messages = threads[activeId] ?? [];
+  const goToConversation = (c: Conversation) => {
+    const seg = c.userTag ?? c.id;
+    navigate(`/${encodeURIComponent(seg)}`);
+  };
 
-  const handleSend = (text: string) => {
-    const msg: ChatMessage = {
-      id: `m${Date.now()}`,
-      from: "me",
-      at: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-      text,
-    };
-    setThreads((prev) => ({
-      ...prev,
-      [activeId]: [...(prev[activeId] ?? []), msg],
-    }));
-    setConversations((prev) =>
-      prev.map((c) => (c.id === activeId ? { ...c, last: text, lastAt: "now", unread: 0 } : c)),
-    );
-
-    setTyping(true);
-    const delay = 1200 + Math.random() * 1000;
-    setTimeout(() => {
-      setTyping(false);
-      const reply: ChatMessage = {
-        id: `m${Date.now()}`,
-        from: "them",
-        at: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-        text: "👍",
-      };
-      setThreads((prev) => ({
-        ...prev,
-        [activeId]: [...(prev[activeId] ?? []), reply],
-      }));
-    }, delay);
+  const onSelectUser = (u: User) => {
+    const existingConvoId = byTag[u.tag];
+    if (existingConvoId) {
+      navigate(`/${encodeURIComponent(u.tag)}`);
+      return;
+    }
+    createPrivate.mutate(u.id);
   };
 
   const handleAction = (id: string) => {
@@ -100,22 +108,22 @@ export const ChatShell = () => {
         <Aurora />
         <Sidebar
           conversations={conversations}
-          activeId={activeId}
-          onSelect={setActiveId}
+          activeId={active?.id ?? null}
+          onSelect={goToConversation}
           query=""
+          isLoading={conversationsQuery.isPending}
           onOpenSettings={() => setSettingsOpen(true)}
           onOpenCommand={() => setCmdOpen(true)}
         />
-        <ChatPane conversation={active} messages={messages} typing={typing} onSend={handleSend} />
+        <Outlet />
       </div>
 
       <CommandPalette
         open={cmdOpen}
         onClose={() => setCmdOpen(false)}
         conversations={conversations}
-        onSelectConversation={(id) => {
-          setActiveId(id);
-        }}
+        onSelectConversation={goToConversation}
+        onSelectUser={onSelectUser}
         onAction={handleAction}
       />
 

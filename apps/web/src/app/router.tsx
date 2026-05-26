@@ -6,6 +6,8 @@ import { ForgotPasswordPage } from "@/features/auth/ForgotPasswordPage";
 import { ResetPasswordPage } from "@/features/auth/ResetPasswordPage";
 import { OAuthCallbackPage } from "@/features/auth/OAuthCallbackPage";
 import { ChatShell } from "@/features/chat/ChatShell";
+import { EmptyPane } from "@/features/chat/components/EmptyPane";
+import { ConversationPane } from "@/features/chat/components/ConversationPane";
 
 const ProtectedRoute = () => {
   const token = useAuthStore((s) => s.token);
@@ -32,7 +34,15 @@ export const router = createBrowserRouter([
   },
   {
     element: <ProtectedRoute />,
-    children: [{ path: "/", element: <ChatShell /> }],
+    children: [
+      {
+        element: <ChatShell />,
+        children: [
+          { index: true, element: <EmptyPane /> },
+          { path: ":identifier", element: <ConversationPane /> },
+        ],
+      },
+    ],
   },
   { path: "*", element: <Navigate to="/" replace /> },
 ]);
