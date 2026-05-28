@@ -1,0 +1,6 @@
+@layer components {
+  .wh-popover {
+    position: fixed;
+    z-index: 50;
+  }
+}

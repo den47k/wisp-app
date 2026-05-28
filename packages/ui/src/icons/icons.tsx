@@ -37,7 +37,12 @@ export type IconName =
   | "copy"
   | "download"
   | "refresh"
-  | "key";
+  | "key"
+  | "reply"
+  | "forward"
+  | "edit"
+  | "trash"
+  | "flag";
 
 export const ICON_PATHS: Record<IconName, ReactNode> = {
   search: <path d="M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm10 2-4.35-4.35" />,
@@ -173,6 +178,33 @@ export const ICON_PATHS: Record<IconName, ReactNode> = {
     <>
       <circle cx="7.5" cy="15.5" r="4.5" />
       <path d="m10.7 12.3 9.6-9.6M16 7l3 3M14 9l3 3" />
+    </>
+  ),
+  reply: (
+    <>
+      <path d="M9 14 4 9l5-5" />
+      <path d="M4 9h11a5 5 0 0 1 5 5v6" />
+    </>
+  ),
+  forward: (
+    <>
+      <path d="m15 4 5 5-5 5" />
+      <path d="M20 9H9a5 5 0 0 0-5 5v6" />
+    </>
+  ),
+  edit: (
+    <>
+      <path d="M12 20h9" />
+      <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5Z" />
+    </>
+  ),
+  trash: (
+    <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M10 11v6M14 11v6" />
+  ),
+  flag: (
+    <>
+      <path d="M4 22V4" />
+      <path d="M4 4h13l-2.5 4L17 12H4" />
     </>
   ),
 };

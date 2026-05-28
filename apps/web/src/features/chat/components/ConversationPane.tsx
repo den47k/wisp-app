@@ -109,7 +109,6 @@ export const ConversationPane = () => {
 
   const handleDeleteMessage = (msg: Message) => {
     if (!convoId) return;
-    if (!window.confirm("Delete this message?")) return;
     deleteMutation.mutate(msg.id);
   };
 

@@ -1,10 +1,10 @@
-import { useEffect, useRef } from "react";
-import { Avatar, IconButton } from "@chat/ui";
+import { useEffect, useRef, useState } from "react";
+import { Avatar, ConfirmDialog, IconButton } from "@chat/ui";
 import type { Conversation, Message } from "@chat/domain";
 import { MessageBubble } from "./MessageBubble";
 import { TypingIndicator } from "./TypingIndicator";
 import { Composer } from "./Composer";
-import { ChatThreadSkeleton } from "./ChatThreadSkeleton";
+import { ChatPaneSkeleton } from "./ChatPaneSkeleton";
 
 interface ChatPaneProps {
   conversation: Conversation;
@@ -38,9 +38,20 @@ export const ChatPane = ({
   onCancelEdit,
 }: ChatPaneProps) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const [pendingDelete, setPendingDelete] = useState<Message | null>(null);
   const isGroup = conversation.type === "group";
   const title = conversation.title ?? "Conversation";
   const editing = editingId != null;
+
+  useEffect(() => {
+    setPendingDelete(null);
+  }, [conversation.id]);
+
+  const confirmDelete = () => {
+    if (!pendingDelete) return;
+    onDeleteMessage?.(pendingDelete);
+    setPendingDelete(null);
+  };
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -74,7 +85,7 @@ export const ChatPane = ({
       </header>
 
       {isLoading ? (
-        <ChatThreadSkeleton />
+        <ChatPaneSkeleton />
       ) : (
         <div className="wh-chat-scroll" ref={scrollRef}>
           <div className="wh-day-sep">
@@ -88,7 +99,7 @@ export const ChatPane = ({
               next={messages[i + 1]}
               conversation={conversation}
               onEdit={onEditMessage}
-              onDelete={onDeleteMessage}
+              onDelete={setPendingDelete}
             />
           ))}
           {typing && <TypingIndicator conversation={conversation} />}
@@ -113,6 +124,15 @@ export const ChatPane = ({
           focusKey={conversation.id}
         />
       )}
+
+      <ConfirmDialog
+        open={pendingDelete != null}
+        onClose={() => setPendingDelete(null)}
+        onConfirm={confirmDelete}
+        title="Delete this message?"
+        description="It will be removed for everyone in this chat. This can't be undone."
+        confirmLabel="Delete"
+      />
     </section>
   );
 };

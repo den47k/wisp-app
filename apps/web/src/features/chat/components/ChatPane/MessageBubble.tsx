@@ -1,7 +1,9 @@
-import { Avatar, Icon, cn } from "@chat/ui";
+import { useState, type MouseEvent } from "react";
+import { Avatar, Icon, cn, type PopoverAnchor } from "@chat/ui";
 import type { Conversation, Message } from "@chat/domain";
 import { useAuthStore } from "@/stores/auth";
 import { formatTime } from "../../utils/time";
+import { MessageActions, type MessageAction } from "./MessageActions";
 
 interface Props {
   message: Message;
@@ -30,7 +32,27 @@ export const MessageBubble = ({
   const showAvatar = !isMe && !groupWithNext && isGroup;
   const showWho = !isMe && isGroup && !groupWithPrev;
   const senderName = m.sender?.name ?? "";
-  const edited = !!m.editedAt;
+  const edited = m.updatedAt !== m.createdAt;
+
+  const [anchor, setAnchor] = useState<PopoverAnchor | null>(null);
+
+  const openMenu = (e: MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setAnchor({ x: e.clientX, y: e.clientY });
+  };
+
+  const handleAction = (a: MessageAction) => {
+    switch (a) {
+      case "edit":
+        onEdit?.(m);
+        break;
+      case "delete":
+        onDelete?.(m);
+        break;
+      default:
+        console.log("[msg-action]", a, m.id);
+    }
+  };
 
   return (
     <div
@@ -38,6 +60,7 @@ export const MessageBubble = ({
         "wh-msg",
         isMe ? "wh-msg--me" : "wh-msg--them",
         groupWithNext && "wh-msg--grouped",
+        anchor && "wh-msg--menu-open",
       )}
     >
       {!isMe && (
@@ -47,41 +70,29 @@ export const MessageBubble = ({
       )}
       <div className="wh-msg-col">
         {showWho && <div className="wh-msg-who">{senderName}</div>}
-        <div
-          className={cn(
-            "wh-bubble",
-            isMe && "wh-bubble--me",
-            groupWithPrev && "wh-bubble--cont-top",
-            groupWithNext && "wh-bubble--cont-bot",
-          )}
-        >
-          {m.content ?? ""}
+        <div className="wh-bubble-wrap" onContextMenu={openMenu}>
+          <div
+            className={cn(
+              "wh-bubble",
+              isMe && "wh-bubble--me",
+              groupWithPrev && "wh-bubble--cont-top",
+              groupWithNext && "wh-bubble--cont-bot",
+            )}
+          >
+            <span className="wh-bubble-text">{m.content ?? ""}</span>
+          </div>
+          <MessageActions
+            isMe={isMe}
+            anchor={anchor}
+            onClose={() => setAnchor(null)}
+            onAction={handleAction}
+          />
         </div>
         {!groupWithNext && (
           <div className="wh-msg-meta">
             <span>{formatTime(m.createdAt)}</span>
             {edited && <span className="wh-msg-edited">· edited</span>}
             {isMe && <Icon name="doubleCheck" size={12} />}
-            {isMe && onEdit && (
-              <button
-                type="button"
-                className="wh-msg-action"
-                onClick={() => onEdit(m)}
-                title="Edit message"
-              >
-                edit
-              </button>
-            )}
-            {isMe && onDelete && (
-              <button
-                type="button"
-                className="wh-msg-action"
-                onClick={() => onDelete(m)}
-                title="Delete message"
-              >
-                <Icon name="x" size={12} />
-              </button>
-            )}
           </div>
         )}
       </div>

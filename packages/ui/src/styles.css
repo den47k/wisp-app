@@ -12,6 +12,7 @@
 @import "./styles/components/inputs.css";
 @import "./styles/components/segmented.css";
 @import "./styles/components/avatar.css";
+@import "./styles/components/popover.css";
 @import "./styles/components/app-shell.css";
 @import "./styles/components/sidebar.css";
 @import "./styles/components/chat.css";

@@ -9,3 +9,6 @@ export { Input } from "./primitives/Input";
 export { SegmentedControl } from "./primitives/SegmentedControl";
 export { Toggle } from "./primitives/Toggle";
 export { Badge } from "./primitives/Badge";
+export { Popover, type PopoverAnchor } from "./primitives/Popover";
+export { ConfirmDialog } from "./primitives/ConfirmDialog";
+export { Skeleton } from "./primitives/Skeleton";

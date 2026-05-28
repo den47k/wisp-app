@@ -8,7 +8,7 @@ import { api } from "@/lib/api";
 import { getRealtimeClient, resetRealtimeClient } from "@/lib/realtime";
 import { userChannel } from "@chat/domain";
 import type { Conversation, User } from "@chat/domain";
-import { Button } from "@chat/ui";
+import { ConfirmDialog } from "@chat/ui";
 import { Aurora } from "./components/Aurora";
 import { Sidebar } from "./components/Sidebar/Sidebar";
 import { CommandPalette } from "./components/CommandPalette/CommandPalette";
@@ -133,24 +133,16 @@ export const ChatShell = () => {
         onSignOut={() => setConfirmLogout(true)}
       />
 
-      {confirmLogout && (
-        <div className="wh-confirm-overlay" onClick={() => setConfirmLogout(false)}>
-          <div className="wh-confirm" onClick={(e) => e.stopPropagation()}>
-            <h3 className="wh-confirm-h">Sign out?</h3>
-            <p className="wh-confirm-desc">
-              You'll need to sign in again to access your conversations.
-            </p>
-            <div className="wh-confirm-actions">
-              <Button variant="ghost" onClick={() => setConfirmLogout(false)}>
-                Cancel
-              </Button>
-              <Button variant="danger" onClick={doLogout} disabled={logout.isPending}>
-                {logout.isPending ? "Signing out…" : "Sign out"}
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmDialog
+        open={confirmLogout}
+        onClose={() => setConfirmLogout(false)}
+        onConfirm={doLogout}
+        title="Sign out?"
+        description="You'll need to sign in again to access your conversations."
+        confirmLabel="Sign out"
+        pending={logout.isPending}
+        pendingLabel="Signing out…"
+      />
     </>
   );
 };

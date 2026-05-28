@@ -2,7 +2,7 @@ import { Avatar, Icon } from "@chat/ui";
 import type { Conversation } from "@chat/domain";
 import { useAuthStore } from "@/stores/auth";
 import { ConversationListItem } from "./ConversationListItem";
-import { SidebarSkeleton, SidebarSearchSkeleton, SidebarMeSkeleton } from "./SidebarSkeletons";
+import { SidebarSkeleton } from "./SidebarSkeleton";
 
 interface SidebarProps {
   conversations: Conversation[];
@@ -44,7 +44,7 @@ export const Sidebar = ({
       </div>
 
       {isLoading ? (
-        <SidebarSearchSkeleton />
+        <SidebarSkeleton.Search />
       ) : (
         <button type="button" className="wh-search" onClick={onOpenCommand}>
           <Icon name="search" size={14} />
@@ -54,7 +54,7 @@ export const Sidebar = ({
       )}
 
       {isLoading ? (
-        <SidebarSkeleton />
+        <SidebarSkeleton.ConvoList />
       ) : showEmpty ? (
         <div className="wh-sb-scroll">
           <div className="wh-sb-empty-state">
@@ -79,7 +79,7 @@ export const Sidebar = ({
       )}
 
       {isLoading ? (
-        <SidebarMeSkeleton />
+        <SidebarSkeleton.Me />
       ) : (
         <button type="button" className="wh-me" onClick={onOpenSettings}>
           <Avatar name={user?.name ?? "You"} seed={user?.id} size={32} online />
