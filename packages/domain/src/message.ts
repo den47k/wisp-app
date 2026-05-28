@@ -11,8 +11,8 @@ export const MessageSchema = z.object({
   id: z.string().uuid(),
   content: z.string().nullable(),
   conversationId: z.string().uuid().nullable(),
-  editedAt: z.string().datetime({ offset: true }).nullable(),
   createdAt: z.string().datetime({ offset: true }),
+  updatedAt: z.string().datetime({ offset: true }),
   sender: UserSchema.optional(),
   attachment: MessageAttachmentSchema.nullable().optional(),
 });
