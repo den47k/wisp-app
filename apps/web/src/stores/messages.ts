@@ -17,7 +17,13 @@ interface MessagesState {
 }
 
 const sortByCreatedAsc = (items: Message[]) =>
-  [...items].sort((a, b) => (a.createdAt < b.createdAt ? -1 : a.createdAt > b.createdAt ? 1 : 0));
+  [...items].sort((a, b) => {
+    if (a.createdAt < b.createdAt) return -1;
+    if (a.createdAt > b.createdAt) return 1;
+    if (a.id < b.id) return -1;
+    if (a.id > b.id) return 1;
+    return 0;
+  });
 
 export const useMessagesStore = create<MessagesState>((set) => ({
   byConversation: {},
