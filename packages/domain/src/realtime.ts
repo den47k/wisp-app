@@ -20,7 +20,6 @@ export type RealtimeTokenResponse = z.infer<typeof RealtimeTokenResponseSchema>;
 export type RealtimeSubscribeResponse = z.infer<typeof RealtimeSubscribeResponseSchema>;
 
 export const userChannel = (userId: string) => `user:${userId}`;
-export const conversationChannel = (conversationId: string) => `conv:${conversationId}`;
 
 export const RealtimeEnvelopeSchema = z.object({
   event: z.string(),

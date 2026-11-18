@@ -2,13 +2,9 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import type { Message } from "@chat/domain";
-import { conversationChannel } from "@chat/domain";
 import { api } from "@/lib/api";
-import { getRealtimeClient } from "@/lib/realtime";
 import { useConversationsStore, selectByIdentifier } from "@/stores/conversations";
 import { useMessagesStore, selectMessages } from "@/stores/messages";
-import { handleRealtimeEvent } from "../realtime/dispatcher";
-import { useAuthStore } from "@/stores/auth";
 import { useMessagesQuery } from "../hooks/useMessagesQuery";
 import { ChatPane } from "./ChatPane/ChatPane";
 
@@ -26,8 +22,6 @@ export const ConversationPane = () => {
   const upsertMessage = useMessagesStore((s) => s.upsertMessage);
   const removeMessage = useMessagesStore((s) => s.removeMessage);
 
-  const currentUserId = useAuthStore((s) => s.user?.id);
-
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingDraft, setEditingDraft] = useState("");
 
@@ -42,16 +36,6 @@ export const ConversationPane = () => {
     setEditingId(null);
     setEditingDraft("");
   }, [convoId]);
-
-  useEffect(() => {
-    if (!convoId || isEphemeral || !currentUserId) return;
-    const rt = getRealtimeClient();
-    rt.connect();
-    const unsub = rt.subscribe(conversationChannel(convoId), {
-      onPublication: (data) => handleRealtimeEvent(data, { currentUserId }),
-    });
-    return () => unsub();
-  }, [convoId, isEphemeral, currentUserId]);
 
   const sendMutation = useMutation({
     mutationFn: (content: string) =>

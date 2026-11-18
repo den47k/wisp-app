@@ -3,4 +3,4 @@ export {
   type RealtimeClient,
   type RealtimeClientOptions,
 } from "./client";
-export { userChannel, conversationChannel } from "@chat/domain";
+export { userChannel } from "@chat/domain";
