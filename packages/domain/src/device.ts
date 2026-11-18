@@ -4,15 +4,15 @@ export const ClientTypeSchema = z.enum(["desktop", "mobile", "web", "unknown"]);
 
 export const DeviceSchema = z.object({
   id: z.string().uuid(),
-  device_name: z.string(),
-  client_type: ClientTypeSchema,
+  deviceName: z.string(),
+  clientType: ClientTypeSchema,
   platform: z.string().nullable(),
   browser: z.string().nullable(),
-  ip_address: z.string().nullable(),
-  last_seen_at: z.string().datetime().nullable(),
-  last_seen_ip: z.string().nullable(),
-  trusted_at: z.string().datetime().nullable(),
-  created_at: z.string().datetime(),
+  ipAddress: z.string().nullable(),
+  lastSeenAt: z.string().datetime({ offset: true }).nullable(),
+  lastSeenIp: z.string().nullable(),
+  isCurrent: z.boolean(),
+  createdAt: z.string().datetime({ offset: true }),
 });
 
 export const DeviceListResponseSchema = z.object({

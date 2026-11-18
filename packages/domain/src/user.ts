@@ -21,6 +21,10 @@ export const AuthenticatedUserSchema = UserSchema.extend({
   twoFactorEnabled: z.boolean(),
 });
 
+export const AuthenticatedUserResponseSchema = z.object({
+  data: AuthenticatedUserSchema,
+});
+
 export const SearchUsersResponseSchema = z.object({
   data: z.array(UserSchema),
 });

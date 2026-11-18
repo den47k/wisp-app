@@ -1,5 +1,5 @@
 import {
-  AuthenticatedUserSchema,
+  AuthenticatedUserResponseSchema,
   LoginResponseSchema,
   LoginSuccessSchema,
   MessageResponseSchema,
@@ -51,8 +51,10 @@ export const authEndpoints = (client: ApiClient) => ({
     await client.post("/auth/logout/all");
   },
 
-  me: (): Promise<AuthenticatedUser> =>
-    request(client, "/user", AuthenticatedUserSchema, { method: "GET" }),
+  me: async (): Promise<AuthenticatedUser> => {
+    const res = await request(client, "/auth/me", AuthenticatedUserResponseSchema, { method: "GET" });
+    return res.data;
+  },
 
   registerStart: (body: RegisterStartRequest): Promise<RegisterStartResponse> =>
     request(client, "/auth/register/start", RegisterStartResponseSchema, {
@@ -120,13 +122,13 @@ export const authEndpoints = (client: ApiClient) => ({
     }),
 
   forgotPassword: (body: ForgotPasswordRequest): Promise<MessageResponse> =>
-    request(client, "/forgot-password", MessageResponseSchema, {
+    request(client, "/auth/password/forgot", MessageResponseSchema, {
       method: "POST",
       data: body,
     }),
 
   resetPassword: (body: ResetPasswordRequest): Promise<MessageResponse> =>
-    request(client, "/reset-password", MessageResponseSchema, {
+    request(client, "/auth/password/reset", MessageResponseSchema, {
       method: "POST",
       data: body,
     }),

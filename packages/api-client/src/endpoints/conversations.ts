@@ -75,7 +75,7 @@ export const conversationEndpoints = (client: ApiClient) => ({
   },
 
   markAsRead: async (id: string): Promise<void> => {
-    await client.post(`/conversations/${id}/mark-as-read`);
+    await client.post(`/conversations/${id}/read`);
   },
 
   listMessages: async (
