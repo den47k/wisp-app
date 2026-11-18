@@ -53,8 +53,8 @@ export type ConversationCreatedPayload = z.infer<typeof ConversationCreatedPaylo
 export type ConversationDeletedPayload = z.infer<typeof ConversationDeletedPayloadSchema>;
 
 export type RealtimeEventName =
-  | "MessageCreatedEvent"
-  | "MessageUpdatedEvent"
-  | "MessageDeletedEvent"
-  | "ConversationCreated"
-  | "ConversationDeleted";
+  | "message.created"
+  | "message.updated"
+  | "message.deleted"
+  | "conversation.created"
+  | "conversation.deleted";

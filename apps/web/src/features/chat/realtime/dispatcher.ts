@@ -23,7 +23,7 @@ export const handleRealtimeEvent = (raw: unknown, ctx: DispatchContext): void =>
   const { event, data } = envelopeParsed.data;
 
   switch (event) {
-    case "MessageCreatedEvent": {
+    case "message.created": {
       const parsed = MessageEventPayloadSchema.safeParse(data);
       if (!parsed.success) return logParseError(event, parsed.error);
       const msg = parsed.data.message;
@@ -48,7 +48,7 @@ export const handleRealtimeEvent = (raw: unknown, ctx: DispatchContext): void =>
       return;
     }
 
-    case "MessageUpdatedEvent": {
+    case "message.updated": {
       const parsed = MessageEventPayloadSchema.safeParse(data);
       if (!parsed.success) return logParseError(event, parsed.error);
       const msg = parsed.data.message;
@@ -60,7 +60,7 @@ export const handleRealtimeEvent = (raw: unknown, ctx: DispatchContext): void =>
       return;
     }
 
-    case "MessageDeletedEvent": {
+    case "message.deleted": {
       const parsed = MessageDeletedPayloadSchema.safeParse(data);
       if (!parsed.success) return logParseError(event, parsed.error);
       const { conversationId, deletedId, wasLastMessage, newLastMessage, hasUnread } = parsed.data;
@@ -75,14 +75,14 @@ export const handleRealtimeEvent = (raw: unknown, ctx: DispatchContext): void =>
       return;
     }
 
-    case "ConversationCreated": {
+    case "conversation.created": {
       const parsed = ConversationCreatedPayloadSchema.safeParse(data);
       if (!parsed.success) return logParseError(event, parsed.error);
       useConversationsStore.getState().upsert(parsed.data.conversation);
       return;
     }
 
-    case "ConversationDeleted": {
+    case "conversation.deleted": {
       const parsed = ConversationDeletedPayloadSchema.safeParse(data);
       if (!parsed.success) return logParseError(event, parsed.error);
       useConversationsStore.getState().remove(parsed.data.id);
