@@ -10,11 +10,11 @@ export const MessageAttachmentSchema = z.object({
 export const MessageSchema = z.object({
   id: z.string().uuid(),
   content: z.string().nullable(),
-  conversationId: z.string().uuid().nullable(),
+  conversationId: z.string().uuid(),
   createdAt: z.string().datetime({ offset: true }),
   updatedAt: z.string().datetime({ offset: true }),
-  sender: UserSchema.optional(),
-  attachment: MessageAttachmentSchema.nullable().optional(),
+  sender: UserSchema,
+  attachment: MessageAttachmentSchema.nullable(),
 });
 
 export const SendMessageRequestSchema = z.object({
@@ -35,15 +35,16 @@ export const PaginatedMessagesSchema = z.object({
 });
 
 export const UpdateMessageResponseSchema = z.object({
-  message: z.string(),
   data: MessageSchema,
 });
 
 export const DeleteMessageResponseSchema = z.object({
-  message: z.string(),
-  deletedId: z.string().uuid(),
-  wasLastMessage: z.boolean(),
-  newLastMessage: MessageSchema.nullable(),
+  data: z.object({
+    conversationId: z.string().uuid(),
+    deletedId: z.string().uuid(),
+    wasLastMessage: z.boolean(),
+    newLastMessage: MessageSchema.nullable(),
+  }),
 });
 
 export type Message = z.infer<typeof MessageSchema>;

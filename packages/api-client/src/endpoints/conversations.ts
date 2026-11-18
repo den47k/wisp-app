@@ -67,7 +67,7 @@ export const conversationEndpoints = (client: ApiClient) => ({
       CreatePrivateConversationResponseSchema,
       { method: "POST", data: { user_id, should_join_now } },
     );
-    return res.conversation;
+    return res.data;
   },
 
   delete: async (id: string): Promise<void> => {
@@ -122,11 +122,13 @@ export const conversationEndpoints = (client: ApiClient) => ({
   deleteMessage: async (
     conversationId: string,
     messageId: string,
-  ): Promise<DeleteMessageResponse> =>
-    request(
+  ): Promise<DeleteMessageResponse["data"]> => {
+    const res = await request(
       client,
       `/conversations/${conversationId}/messages/${messageId}`,
       DeleteMessageResponseSchema,
       { method: "DELETE" },
-    ),
+    );
+    return res.data;
+  },
 });

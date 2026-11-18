@@ -24,8 +24,7 @@ export const CreatePrivateConversationRequestSchema = z.object({
 });
 
 export const CreatePrivateConversationResponseSchema = z.object({
-  message: z.string(),
-  conversation: ConversationSchema,
+  data: ConversationSchema,
 });
 
 export const PaginatedConversationsSchema = z.object({
@@ -45,7 +44,6 @@ export const SingleConversationSchema = z.object({
 });
 
 export const StoreMessageResponseSchema = z.object({
-  message: z.string(),
   data: z.object({
     message: MessageSchema,
     conversation: ConversationSchema,

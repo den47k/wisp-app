@@ -51,10 +51,8 @@ export const ConversationPane = () => {
     mutationFn: ({ messageId, content }: { messageId: string; content: string }) =>
       api.conversations.updateMessage(convoId as string, messageId, { content }),
     onSuccess: (msg) => {
-      const cid = msg.conversationId ?? convoId;
-      if (!cid) return;
-      upsertMessage(cid, msg);
-      patchLastMessage(cid, msg);
+      upsertMessage(msg.conversationId, msg);
+      patchLastMessage(msg.conversationId, msg);
       setEditingId(null);
       setEditingDraft("");
     },
@@ -64,10 +62,9 @@ export const ConversationPane = () => {
     mutationFn: (messageId: string) =>
       api.conversations.deleteMessage(convoId as string, messageId),
     onSuccess: (res) => {
-      if (!convoId) return;
-      removeMessage(convoId, res.deletedId);
+      removeMessage(res.conversationId, res.deletedId);
       if (res.wasLastMessage) {
-        applyDeletedLastMessage(convoId, res.newLastMessage);
+        applyDeletedLastMessage(res.conversationId, res.newLastMessage);
       }
     },
   });

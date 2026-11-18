@@ -28,7 +28,6 @@ export const handleRealtimeEvent = (raw: unknown, ctx: DispatchContext): void =>
       if (!parsed.success) return logParseError(event, parsed.error);
       const msg = parsed.data.message;
       const convoId = msg.conversationId;
-      if (!convoId) return;
 
       const messagesStore = useMessagesStore.getState();
       messagesStore.upsertMessage(convoId, msg);
@@ -53,7 +52,6 @@ export const handleRealtimeEvent = (raw: unknown, ctx: DispatchContext): void =>
       if (!parsed.success) return logParseError(event, parsed.error);
       const msg = parsed.data.message;
       const convoId = msg.conversationId;
-      if (!convoId) return;
 
       useMessagesStore.getState().upsertMessage(convoId, msg);
       useConversationsStore.getState().patchLastMessage(convoId, msg);
