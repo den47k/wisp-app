@@ -3,6 +3,8 @@ import {
   LoginResponseSchema,
   LoginSuccessSchema,
   MessageResponseSchema,
+  OAuthCallbackResponseSchema,
+  OAuthConfirmLinkResponseSchema,
   OAuthRedirectResponseSchema,
   RegisterStartResponseSchema,
   RegisterVerifyEmailResponseSchema,
@@ -134,72 +136,23 @@ export const authEndpoints = (client: ApiClient) => ({
       method: "GET",
     }),
 
-  oauthCallback: async (
+  oauthCallback: (
     provider: Provider,
     query: { code?: string; state?: string; device_name?: string },
-  ): Promise<OAuthCallbackResult> => {
-    const res = await client.request({
-      url: `/auth/oauth/${provider}/callback`,
+  ): Promise<OAuthCallbackResult> =>
+    request(client, `/auth/oauth/${provider}/callback`, OAuthCallbackResponseSchema, {
       method: "GET",
       params: query,
-      validateStatus: (s) => s === 200 || s === 409,
-    });
-    const data = res.data as Record<string, unknown>;
-    if (res.status === 409 && data.status === "link_required") {
-      return {
-        kind: "link_required",
-        link_token: data.link_token as string,
-        token_type: "Bearer",
-        expires_in: data.expires_in as number,
-      };
-    }
-    if (data.requires_2fa === true) {
-      return {
-        kind: "2fa",
-        challenge_token: data.challenge_token as string,
-        token_type: "Bearer",
-        expires_in: data.expires_in as number,
-      };
-    }
-    if (data.status === "pending_email" || data.status === "pending_profile") {
-      return {
-        kind: data.status,
-        registration_token: data.registration_token as string,
-        token_type: "Bearer",
-        expires_in: data.expires_in as number,
-      };
-    }
-    return { kind: "logged_in", ...(data as unknown as LoginSuccess) };
-  },
+    }),
 
-  oauthConfirmLink: async (
+  oauthConfirmLink: (
     provider: Provider,
     body: OAuthConfirmLinkRequest,
     linkToken: string,
-  ): Promise<OAuthConfirmLinkResult> => {
-    const res = await client.request({
-      url: `/auth/oauth/${provider}/link/confirm`,
+  ): Promise<OAuthConfirmLinkResult> =>
+    request(client, `/auth/oauth/${provider}/link/confirm`, OAuthConfirmLinkResponseSchema, {
       method: "POST",
       data: body,
       headers: { Authorization: `Bearer ${linkToken}` },
-    });
-    const data = res.data as Record<string, unknown>;
-    if (data.requires_2fa === true) {
-      return {
-        kind: "2fa",
-        challenge_token: data.challenge_token as string,
-        token_type: "Bearer",
-        expires_in: data.expires_in as number,
-      };
-    }
-    if (data.status === "pending_email" || data.status === "pending_profile") {
-      return {
-        kind: data.status,
-        registration_token: data.registration_token as string,
-        token_type: "Bearer",
-        expires_in: data.expires_in as number,
-      };
-    }
-    return { kind: "logged_in", ...(data as unknown as LoginSuccess) };
-  },
+    }),
 });

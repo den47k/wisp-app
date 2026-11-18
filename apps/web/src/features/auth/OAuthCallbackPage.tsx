@@ -54,16 +54,16 @@ export const OAuthCallbackPage = () => {
     api.auth
       .oauthCallback(provider, { code, state, device_name: deviceName() })
       .then((res: OAuthCallbackResult) => {
-        if (res.kind === "logged_in") {
+        if (res.status === "authenticated") {
           setSession(res.token, res.user);
           navigate("/", { replace: true });
-        } else if (res.kind === "link_required") {
+        } else if (res.status === "link_required") {
           setView({ kind: "link_required", linkToken: res.link_token });
-        } else if (res.kind === "2fa") {
+        } else if (res.status === "two_factor_required") {
           setView({ kind: "2fa", challengeToken: res.challenge_token });
         } else {
           navigate("/register", {
-            state: { resume: res.kind, registration_token: res.registration_token },
+            state: { resume: res.status, registration_token: res.registration_token },
             replace: true,
           });
         }
@@ -98,13 +98,13 @@ export const OAuthCallbackPage = () => {
           provider={provider}
           linkToken={view.linkToken}
           onResult={(res) => {
-            if (res.kind === "logged_in") {
+            if (res.status === "authenticated") {
               onLoggedIn(res);
-            } else if (res.kind === "2fa") {
+            } else if (res.status === "two_factor_required") {
               setView({ kind: "2fa", challengeToken: res.challenge_token });
             } else {
               navigate("/register", {
-                state: { resume: res.kind, registration_token: res.registration_token },
+                state: { resume: res.status, registration_token: res.registration_token },
                 replace: true,
               });
             }

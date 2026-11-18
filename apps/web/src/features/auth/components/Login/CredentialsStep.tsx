@@ -4,7 +4,6 @@ import { useMutation } from "@tanstack/react-query";
 import { Link } from "react-router";
 import {
   LoginRequestSchema,
-  isLoginSuccess,
   type LoginRequest,
   type LoginSuccess,
 } from "@chat/domain";
@@ -43,7 +42,7 @@ export const CredentialsStep = ({
   const mutation = useMutation({
     mutationFn: (data: LoginRequest) => api.auth.login(data),
     onSuccess: (res) => {
-      if (isLoginSuccess(res)) {
+      if (res.status === "authenticated") {
         onLoggedIn(res);
       } else {
         onChallenge(res.challenge_token);

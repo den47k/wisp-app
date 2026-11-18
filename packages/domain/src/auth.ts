@@ -8,6 +8,7 @@ export const LoginRequestSchema = z.object({
 });
 
 export const LoginSuccessSchema = z.object({
+  status: z.literal("authenticated"),
   user: AuthenticatedUserSchema,
   token: z.string(),
   token_type: z.literal("Bearer"),
@@ -15,13 +16,16 @@ export const LoginSuccessSchema = z.object({
 });
 
 export const Login2FARequiredSchema = z.object({
-  requires_2fa: z.literal(true),
+  status: z.literal("two_factor_required"),
   challenge_token: z.string(),
   token_type: z.literal("Bearer"),
   expires_in: z.number(),
 });
 
-export const LoginResponseSchema = z.union([LoginSuccessSchema, Login2FARequiredSchema]);
+export const LoginResponseSchema = z.discriminatedUnion("status", [
+  LoginSuccessSchema,
+  Login2FARequiredSchema,
+]);
 
 export const RegisterStartRequestSchema = z
   .object({
@@ -132,6 +136,19 @@ export const OAuthPendingRegistrationSchema = z.object({
   expires_in: z.number(),
 });
 
+export const OAuthCallbackResponseSchema = z.discriminatedUnion("status", [
+  LoginSuccessSchema,
+  Login2FARequiredSchema,
+  OAuthPendingRegistrationSchema,
+  OAuthLinkRequiredSchema,
+]);
+
+export const OAuthConfirmLinkResponseSchema = z.discriminatedUnion("status", [
+  LoginSuccessSchema,
+  Login2FARequiredSchema,
+  OAuthPendingRegistrationSchema,
+]);
+
 export const OAuthConfirmLinkRequestSchema = z.object({
   password: z.string().min(1),
   device_name: z.string().max(128),
@@ -160,16 +177,5 @@ export type OAuthRedirectResponse = z.infer<typeof OAuthRedirectResponseSchema>;
 export type OAuthLinkRequired = z.infer<typeof OAuthLinkRequiredSchema>;
 export type OAuthPendingRegistration = z.infer<typeof OAuthPendingRegistrationSchema>;
 export type OAuthConfirmLinkRequest = z.infer<typeof OAuthConfirmLinkRequestSchema>;
-
-export type OAuthCallbackResult =
-  | ({ kind: "logged_in" } & LoginSuccess)
-  | ({ kind: "2fa" } & Omit<Login2FARequired, "requires_2fa">)
-  | ({ kind: "pending_email" | "pending_profile" } & Omit<OAuthPendingRegistration, "status">)
-  | ({ kind: "link_required" } & Omit<OAuthLinkRequired, "status">);
-
-export type OAuthConfirmLinkResult =
-  | ({ kind: "logged_in" } & LoginSuccess)
-  | ({ kind: "2fa" } & Omit<Login2FARequired, "requires_2fa">)
-  | ({ kind: "pending_email" | "pending_profile" } & Omit<OAuthPendingRegistration, "status">);
-
-export const isLoginSuccess = (r: LoginResponse): r is LoginSuccess => "token" in r;
+export type OAuthCallbackResult = z.infer<typeof OAuthCallbackResponseSchema>;
+export type OAuthConfirmLinkResult = z.infer<typeof OAuthConfirmLinkResponseSchema>;
